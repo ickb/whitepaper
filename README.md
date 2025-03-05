@@ -43,13 +43,13 @@ Which brings the question: [Is really worth developing an iCKB look-alike and do
 Let's say, a wstCKB too similar to iCKB is developed, the result would be a split liquidity between iCKB and wstCKB, so smaller Deposit Pool size for both, which would bring the following downsides for everyone:
 
 1. Longer withdrawal wait time as the temporal density of deposits maturity depends on Deposit Pool size.
-2. [Busiwork Attack feasibility](https://github.com/ickb/proposal/issues/8).
+2. [Busiwork Attack feasibility](https://github.com/ickb/whitepaper/issues/8).
 
 ## Solution
 
 ### Enter iCKB
 
-The **inflation-protected CKB** (iCKB) is a Nervos L1 [xUDT token](https://github.com/nervosnetwork/rfcs/blob/master/rfcs/0052-extensible-udt/0052-extensible-udt.md) responsible for protecting users against [Nervos secondary issuance inflation](https://www.nervos.org/knowledge-base/understanding_nervos_ckb_issuance_model#secondary_issuance) like NervosDAO, while at the sime time being a liquid asset. In this proposal, the **inflation-protected CKB** will be referred as iCKB.
+The **inflation-protected CKB** (iCKB) is a Nervos L1 [xUDT token](https://github.com/nervosnetwork/rfcs/blob/master/rfcs/0052-extensible-udt/0052-extensible-udt.md) responsible for protecting users against [Nervos secondary issuance inflation](https://www.nervos.org/knowledge-base/understanding_nervos_ckb_issuance_model#secondary_issuance) like NervosDAO, while at the sime time being a liquid asset. In this whitepaper, the **inflation-protected CKB** will be referred as iCKB.
 
 As with dCKB, iCKB's approach is to tokenize NervosDAO receipts, but with a twist: the protocol owns all the CKB deposits and maintains a pool of them. This means that all the deposits and withdrawals are shared, so anyone can use anyone else's deposit to exit once it's mature.
 
@@ -731,19 +731,19 @@ One transaction can mix and include many actions from different Limit Order phas
 
 ## Audit
 
-This proposal and the [code of iCKB Scripts](https://github.com/ickb/v1-core/tree/master/scripts) has been both internally reviewed by individuals with deep experience in Nervos L1 and [externally audited by the Scalebit team](http://scalebit.xyz/reports/20240911-ICKB-Final-Audit-Report.pdf), an internationally recognized blockchain security team.
+This whitepaper and the [code of iCKB Scripts](https://github.com/ickb/v1-core/tree/master/scripts) has been both internally reviewed by individuals with deep experience in Nervos L1 and [externally audited by the Scalebit team](http://scalebit.xyz/reports/20240911-ICKB-Final-Audit-Report.pdf), an internationally recognized blockchain security team.
 
 ## Unsigned Lock Witnesses Malleability
 
-All the script presented in this proposal (iCKB Script, Owned Owner Script and Limit Order Script) follow a novel pattern of using a script both as lock in one cell and type into another cell. While the pattern allows great flexibility, it also comes with an implicit weakness: the cell that uses the script as lock doesn't rely on signature-based verification, so the witnesses in the same group (lock, input type and output type) can be modified by an attacker after user signature. [Credits to @XuJiandong for the discovery](https://github.com/ickb/v1-core/issues/10).
+All the script presented in this whitepaper (iCKB Script, Owned Owner Script and Limit Order Script) follow a novel pattern of using a script both as lock in one cell and type into another cell. While the pattern allows great flexibility, it also comes with an implicit weakness: the cell that uses the script as lock doesn't rely on signature-based verification, so the witnesses in the same group (lock, input type and output type) can be modified by an attacker after user signature. [Credits to @XuJiandong for the discovery](https://github.com/ickb/whitepaper/issues/22).
 
-**Rule of thumb**: if a script in a transaction needs to store data in the witness and this data can be tampered without the transaction becoming invalid, then this transaction must not employ the scripts presented in the current proposal.
+**Rule of thumb**: if a script in a transaction needs to store data in the witness and this data can be tampered without the transaction becoming invalid, then this transaction must not employ the scripts presented in the current whitepaper.
 
 This witnesses malleability doesn't affect the current iCKB use-cases as no data that can be freely tampered is ever stored into witnesses.
 
 ## Confusion Attack on Limit Order
 
-Due to the architectural design of Nervos L1, output locks are not executed during the transaction validation process. Consequently, an attacker may create a limit order that shares the same master cell as an already existing limit order. This situation may lead to confusion to the front-end code regarding the identification of the correct limit order. Users must exercise particular caution when melting their limit order and master cell, as selecting the incorrect limit order could result in the permanent locking of the funds associated with their original limit order. More details in the [dedicated GitHub issue](https://github.com/ickb/proposal/issues/19).
+Due to the architectural design of Nervos L1, output locks are not executed during the transaction validation process. Consequently, an attacker may create a limit order that shares the same master cell as an already existing limit order. This situation may lead to confusion to the front-end code regarding the identification of the correct limit order. Users must exercise particular caution when melting their limit order and master cell, as selecting the incorrect limit order could result in the permanent locking of the funds associated with their original limit order. More details in the [dedicated GitHub issue](https://github.com/ickb/whitepaper/issues/19).
 
 The most practical solution is to fetch the original Mint tx of the Limit Order (LO). With the Mint tx, it's possible to validate (on the front-end) that all the LO parameters are the same between the current LO and the initial Mint LO, but in case there are still multiple LO for the same Master Cell, there must be an additional heuristic.
 
@@ -918,8 +918,8 @@ A few things changed since the inception, these are the updated use cases:
 - [Scalebit Audit](https://scalebit.xyz/reports/20240911-ICKB-Final-Audit-Report.pdf)
 - [Initial proposal on Nervos Talk](https://talk.nervos.org/t/looking-for-feedback-ickb-a-tokenization-of-nervosdao-deposits/6772)
 - [Is wstCKB just another iCKB?](https://github.com/stablepp/media-kit/issues/1)
-- [Reference proposal](https://github.com/ickb/proposal)
+- [Reference whitepaper](https://github.com/ickb/whitepaper)
 
 ## License
 
-This proposal is distributed under [MIT License](https://github.com/ickb/proposal/blob/master/LICENSE.txt).
+This whitepaper is distributed under [MIT License](https://github.com/ickb/whitepaper/blob/master/LICENSE.txt).
