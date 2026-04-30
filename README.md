@@ -211,7 +211,7 @@ Summing up, in the first deposit phase, these rules must be followed:
 - A **receipt** is defined as a cell with iCKB Logic Type `{CodeHash: iCKB Logic Hash, HashType: Data1, Args: Empty}`, the first 16 bytes of cell data are reserved for:
   - `deposit_quantity` keeps track of the quantity of deposits (4 bytes)
   - `deposit_amount` keeps track of the single deposit unoccupied capacity (8 bytes)
-- No more than 64 output cells are allowed, due to the current NervosDAO restriction.
+- No more than 64 output cells are allowed under the [currently deployed NervosDAO script](https://github.com/nervosnetwork/ckb-system-scripts/blob/814eb82c44f560dbdad2be97eb85464062920237/c/dao.c#L565-L591).
 - CellDeps must contain iCKB Dep Group comprising of: iCKB Logic Script and Nervos DAO Script.
 
 **Receipt data molecule encoding:**
@@ -326,12 +326,12 @@ The proposed protocol instead proceed by un-wrapping iCKB tokens into NervosDAO 
 
 1. In the first transaction the user:
     - Requests the withdrawal from some protocol controlled deposits.
-    - Respectfully to that quantity, burns a bigger or equal amount of iCKB tokens and/or receipts.
+    - For that quantity, burns the exact corresponding amount of iCKB tokens and/or receipts.
 2. The second transaction is a Nervos DAO second withdrawal step.
 
 As seen in [iCKB/CKB Exchange Rate Calculation](#ickbckb-exchange-rate-calculation) for each deposit and receipt the equivalent amount of iCKB is well defined. The only difference being the incentivization: requesting the withdrawal from an oversized deposit is incentivized by a 10% discount on the amount exceeding a standard deposit.
 
-An additional NervosDAO constraint is that if deposit lock and withdrawal request lock differs, as in iCKB case, then NervosDAO requires the deposit lock and withdrawal request lock to have the same size. A non solution would be to use a lock with zero padded args in the deposit, then again different user locks would have different sizes, so it wouldn't solve the problem at hand. While iCKB Logic script is independent to the withdrawal request lock choice, this lock has some pretty restrictive constraints, as no information can be stored in its lock args nor in its cell data. For this reason has been developed [Owned Owner Script](#owned-owner-script).
+An additional current CKB constraint is that NervosDAO deposit cells and phase 1 withdrawal cells must use lock scripts of the same serialized size. This is enforced at the node level by the [`DaoScriptSizeVerifier`](https://github.com/nervosnetwork/ckb/blob/6730f8023810d0888aa80c6a0d54cc2af918097d/verification/src/transaction_verifier.rs#L811-L885), which was added as a temporary mitigation for the NervosDAO occupied-capacity vulnerability. The public [Meepo hardfork note](https://blog.cryptape.com/ckb-vm-changes-under-the-meepo-hardfork#heading-fix-nervos-dao-occupied-capacity-vulnerability) describes the same fix and credits [phroi](https://github.com/phroi) with identifying and reporting the issue. Since iCKB deposits use the empty-args `iCKB Logic` lock, this leaves little room to encode user-specific ownership directly in the withdrawal request lock. For this reason, when a dedicated owner/owned pairing is useful, [Owned Owner Script](#owned-owner-script) can wrap a DAO withdrawal request together with a user-owned controller cell.
 
 Summing up, when withdrawing, these rules must be followed:
 
@@ -355,9 +355,9 @@ deposit_iCKB_value(capacity, occupied_capacity, AR_m) {
 }
 ```
 
-- The total iCKB value of input tokens and input receipts must be bigger or equal to the total iCKB value of output tokens and input deposits, the deposits being withdrawn.
-- Withdrawal Request lock must have zero args length and no information stored in the data cell.
-- No more than 64 output cells are allowed, due to the current NervosDAO restriction.
+- The total iCKB value of input tokens and input receipts must be equal to the total iCKB value of output tokens and input deposits, the deposits being withdrawn.
+- The Withdrawal Request lock must have the same serialized size as the consumed deposit lock under the current CKB node-level DAO rule.
+- No more than 64 output cells are allowed under the [currently deployed NervosDAO script](https://github.com/nervosnetwork/ckb-system-scripts/blob/814eb82c44f560dbdad2be97eb85464062920237/c/dao.c#L565-L591).
 - HeaderDeps must include the hash of the header of the on-chain block containing the deposits for each deposit being used to withdraw and each receipt being directly cashed out.
 - CellDeps must contain iCKB Dep Group comprising of: iCKB Logic Script, Standard xUDT Script and Nervos DAO Script.
 
@@ -390,7 +390,7 @@ Outputs:
     - Nervos DAO phase 1 withdrawal cell:
         Data: Deposit cell's including block number
         Type: Nervos DAO
-        Lock: A lock that identifies the user
+        Lock: A user lock with the same serialized size as the deposit lock
     - ...
 ```
 
@@ -408,7 +408,7 @@ One transaction can mix and include many actions from different iCKB phases. For
 
 The iCKB protocol without additional scripts would be difficult to use, this section describes the L1 scripts that have been developed to address iCKB user needs.
 
-These scripts offers solutions to specific lock needs, while supporting all users locks. The natural choice to prove user ownership would be to use the delegated signature validation pattern, then again given the incumbent OTX era this pattern has some specific OTX pitfalls. Let's assume that:
+These scripts offer solutions to specific lock needs, while supporting all user locks. The current iCKB deployment assumes whole-transaction-binding user locks, but delegated-signature and `OTX`-style integrations need extra care. For example, let's assume that:
 
 - The user lock is OTX signature based.
 - The user unlocks some cells with signature in an OTX transaction, first OTX.
@@ -435,7 +435,7 @@ This is the reason why these scripts are instead designed around a similar but s
 
 ### Owned Owner Script
 
-While iCKB Logic script is independent to the withdrawal request lock choice, this lock has some pretty restrictive constraints, as no information can be stored in its lock args nor in its cell data. For this reason has been developed Owned Owner Script. This script can only be used in conjunction with withdrawal requests. In a transaction there may be multiple owned cells and owner cells. This script lifecycle consists of two transactions: Mint and Melt.
+While the iCKB Logic Script is independent of the withdrawal request lock choice, a dedicated owner/owned pairing can still be useful. For this reason, the Owned Owner Script was developed. This script pairs DAO withdrawal requests, including but not limited to iCKB-origin withdrawals, with owner cells. In a transaction there may be multiple owned cells and owner cells. This script lifecycle consists of two transactions: Mint and Melt.
 
 **Owner data molecule encoding:**
 
@@ -538,7 +538,7 @@ Outputs:
 
 Interacting directly with the iCKB protocol has some limitations:
 
-- In transactions containing NervosDAO script, no more than 64 output cells are allowed.
+- In transactions containing NervosDAO script, no more than 64 output cells are allowed under the [currently deployed NervosDAO script](https://github.com/nervosnetwork/ckb-system-scripts/blob/814eb82c44f560dbdad2be97eb85464062920237/c/dao.c#L565-L591).
 - iCKB Logic discourages deposits bigger or smaller than the standard deposit size.
 - There may be a mismatch between the amount the user wants to withdraw and the deposits available in the iCKB pool.
 - NervosDAO doesn't allow to partially withdraw from a deposit.
