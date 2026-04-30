@@ -435,7 +435,7 @@ This is the reason why these scripts are instead designed around a similar but s
 
 ### Owned Owner Script
 
-While iCKB Logic script is independent to the withdrawal request lock choice, a dedicated owner/owned pairing can still be useful. For this reason, the Owned Owner Script was developed. This script pairs DAO withdrawal requests, including but not limited to iCKB-origin withdrawals, with owner cells. In a transaction there may be multiple owned cells and owner cells. This script lifecycle consists of two transactions: Mint and Melt.
+While the iCKB Logic Script is independent of the withdrawal request lock choice, a dedicated owner/owned pairing can still be useful. For this reason, the Owned Owner Script was developed. This script pairs DAO withdrawal requests, including but not limited to iCKB-origin withdrawals, with owner cells. In a transaction there may be multiple owned cells and owner cells. This script lifecycle consists of two transactions: Mint and Melt.
 
 **Owner data molecule encoding:**
 
