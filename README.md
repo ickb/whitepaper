@@ -778,7 +778,10 @@ An implementation of this patch can be found in [iCKB/V1-Core](https://github.co
 The current stack keeps the same front-end strategy in `@ickb/order`, but makes the selection rule explicit in one resolver.
 
 1. Fetch the original Mint LO for a given Master cell and treat it as the origin.
-2. Reject any candidate LO whose lock script, UDT type, resolved Master outpoint, or order parameters differ from the origin, or whose normalized value is lower than the origin. Here `normalized value` means the order value computed from unoccupied CKB and UDT with the order multipliers: for CKB -> UDT, `ckb_unoccupied * ckb_to_udt.ckb_multiplier + udt_value * ckb_to_udt.udt_multiplier`; for UDT -> CKB, `ckb_unoccupied * udt_to_ckb.ckb_multiplier + udt_value * udt_to_ckb.udt_multiplier`; for Dual-Sided LO, the stack compares the common-scale average of those two values as implemented by `@ickb/order`.
+2. Reject any candidate LO whose lock script, UDT type, resolved Master outpoint, or order parameters differ from the origin, or whose normalized value is lower than the origin. Here `normalized value` means the order value computed from unoccupied CKB and UDT with the order multipliers:
+   - CKB -> UDT: `ckb_unoccupied * ckb_to_udt.ckb_multiplier + udt_value * ckb_to_udt.udt_multiplier`
+   - UDT -> CKB: `ckb_unoccupied * udt_to_ckb.ckb_multiplier + udt_value * udt_to_ckb.udt_multiplier`
+   - Dual-Sided LO: the stack compares the common-scale average of those two values as implemented by `@ickb/order`.
 3. For Directional LO, also reject any candidate whose progress is lower than the origin. Here `progress` means the amount already converted into the target asset, so it is monotonic and favors the real matched lineage over a larger but still unprogressed forgery.
 4. For Dual-Sided LO, there is no irreversible notion of progress, so the stack sets `progress := normalized value`. This reduces the same resolver to the Dual-Sided heuristic above: the LO with the best normalized value is chosen.
 
@@ -795,9 +798,9 @@ This remains a best-effort client-side heuristic for immutable deployed behavior
 
 ## Non-Upgradable Deployment
 
-From the start iCKB has been built in the open as a public good. As such iCKB scripts have been deployed in a non-upgradable way. Concretely, the deployed script references below use `hash_type = data1`: later scripts load code from `cell_deps` by exact cell data hash, so validation is pinned to the deployed binary bytes. By contrast, `hash_type = type` loads code by type-script hash, so the referenced code cell can be replaced by another cell with the same type script and different contents, with the replacement policy then governed by that code cell's lock script. This `data1` reference mode is what makes the live deployment non-upgradable.
+From the start iCKB has been built in the open as a public good. As such iCKB scripts have been deployed in a non-upgradable way. Concretely, the deployed script references below use `hash_type = data1`: the scripts load code from `cell_deps` by exact cell data hash, so validation is pinned to the deployed binary bytes. By contrast, `hash_type = type` loads code by type-script hash, so the referenced code cell can be replaced by another cell with the same type script and different contents, with the replacement policy then governed by that code cell's lock script. This `data1` reference mode is what makes the live deployment non-upgradable.
 
-As a separate deployment detail, the published binary cells themselves are locked with a `secp256k1_blake160` zero lock, an unspendable lock. This does not make the live script references upgradeable, because under `data1` the protocol points to the deployed bytes directly; it only means no trusted operator key remains embedded as an owner of the binary cells.
+As a separate deployment detail, the published binary cells themselves are locked with a `secp256k1_blake160` zero lock, an unspendable lock. This does not make the live script references upgradable, because under `data1` the protocol points to the deployed bytes directly; it only means no trusted operator key remains embedded as an owner of the binary cells.
 
 Additionally, it has been created the following dependency group:
 
