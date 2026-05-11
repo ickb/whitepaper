@@ -778,14 +778,14 @@ An implementation of this patch can be found in [iCKB/V1-Core](https://github.co
 The current stack keeps the same front-end strategy in `@ickb/order`, but makes the selection rule explicit in one resolver.
 
 1. Fetch the original Mint LO for a given Master cell and treat it as the origin.
-2. Reject any candidate LO whose lock script, UDT type, resolved Master outpoint, or order parameters differ from the origin, or whose normalized value is lower than the origin. Here `normalized value` means the total order value after weighting CKB and UDT by the order's ratio scales.
+2. Reject any candidate LO whose lock script, UDT type, resolved Master outpoint, or order parameters differ from the origin, or whose normalized value is lower than the origin. Here `normalized value` means the order value computed from unoccupied CKB and UDT with the order multipliers: for CKB -> UDT, `ckb_unoccupied * ckb_to_udt.ckb_multiplier + udt_value * ckb_to_udt.udt_multiplier`; for UDT -> CKB, `ckb_unoccupied * udt_to_ckb.ckb_multiplier + udt_value * udt_to_ckb.udt_multiplier`; for Dual-Sided LO, the stack compares the common-scale average of those two values as implemented by `@ickb/order`.
 3. For Directional LO, also reject any candidate whose progress is lower than the origin. Here `progress` means the amount already converted into the target asset, so it is monotonic and favors the real matched lineage over a larger but still unprogressed forgery.
 4. For Dual-Sided LO, there is no irreversible notion of progress, so the stack sets `progress := normalized value`. This reduces the same resolver to the Dual-Sided heuristic above: the LO with the best normalized value is chosen.
 
 In the current stack, the directional `progress` scalar is computed from the asset that has already moved to the other side of the order:
 
-- CKB -> UDT: `progress = udt_value * ckb_to_udt.udtScale`
-- UDT -> CKB: `progress = ckb_unoccupied * udt_to_ckb.ckbScale`
+- CKB -> UDT: `progress = udt_value * ckb_to_udt.udt_multiplier`
+- UDT -> CKB: `progress = ckb_unoccupied * udt_to_ckb.ckb_multiplier`
 
 This is why the same resolver can implement both heuristics without branching on a second selection algorithm: Directional LO rank by irreversible progress, while Dual-Sided LO rank by normalized value because for that shape `progress == normalized value`.
 
