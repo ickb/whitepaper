@@ -208,7 +208,7 @@ Summing up, in the first deposit phase, these rules must be followed:
 - A **deposit** is defined as Nervos DAO deposit with an iCKB Logic Lock `{CodeHash: iCKB Logic Hash, HashType: Data1, Args: Empty}`.
 - A single deposit unoccupied capacity cannot be lower than `1000 CKB` nor higher than `1M CKB`.
 - A group of same size deposits must be accounted by a receipt.
-- A **receipt** is defined as a cell with iCKB Logic Type `{CodeHash: iCKB Logic Hash, HashType: Data1, Args: Empty}`, the first 16 bytes of cell data are reserved for:
+- A **receipt** is defined as a cell with iCKB Logic Type `{CodeHash: iCKB Logic Hash, HashType: Data1, Args: Empty}`, the first 12 bytes of cell data are reserved for:
   - `deposit_quantity` keeps track of the quantity of deposits (4 bytes)
   - `deposit_amount` keeps track of the single deposit unoccupied capacity (8 bytes)
 - No more than 64 output cells are allowed under the [currently deployed NervosDAO script](https://github.com/nervosnetwork/ckb-system-scripts/blob/814eb82c44f560dbdad2be97eb85464062920237/c/dao.c#L565-L591).
@@ -775,11 +775,32 @@ Dual-Sided LO (those with two ratios) can increase in value. They increase in va
 
 An implementation of this patch can be found in [iCKB/V1-Core](https://github.com/ickb/v1-core/commit/1d90b1fb37d5a2a359372300c9e4c9a9b29b4459).
 
+The current stack keeps the same front-end strategy in `@ickb/order`, but makes the selection rule explicit in one resolver.
+
+1. Fetch the original Mint LO for a given Master cell and treat it as the origin.
+2. Reject any candidate LO whose lock script, UDT type, resolved Master outpoint, or order parameters differ from the origin, or whose normalized value is lower than the origin. Here `normalized value` means the order value computed from unoccupied CKB and UDT with the order multipliers:
+   - CKB -> UDT: `ckb_unoccupied * ckb_to_udt.ckb_multiplier + udt_value * ckb_to_udt.udt_multiplier`
+   - UDT -> CKB: `ckb_unoccupied * udt_to_ckb.ckb_multiplier + udt_value * udt_to_ckb.udt_multiplier`
+   - Dual-Sided LO: the stack compares the common-scale average of those two values as implemented by `@ickb/order`.
+3. For Directional LO, also reject any candidate whose progress is lower than the origin. Here `progress` means the amount already converted into the target asset, so it is monotonic and favors the real matched lineage over a larger but still unprogressed forgery.
+4. For Dual-Sided LO, there is no irreversible notion of progress, so the stack sets `progress := normalized value`. This reduces the same resolver to the Dual-Sided heuristic above: the LO with the best normalized value is chosen.
+
+In the current stack, the directional `progress` scalar is computed from the asset that has already moved to the other side of the order:
+
+- CKB -> UDT: `progress = udt_value * ckb_to_udt.udt_multiplier`
+- UDT -> CKB: `progress = ckb_unoccupied * udt_to_ckb.ckb_multiplier`
+
+This is why the same resolver can implement both heuristics without branching on a second selection algorithm: Directional LO rank by irreversible progress, while Dual-Sided LO rank by normalized value because for that shape `progress == normalized value`.
+
+If multiple qualified candidates still tie on that primary score, the current stack applies one last tie-break: prefer a newly minted LO over a non-mint LO. In practice this means preferring a candidate that still carries the mint-relative Master reference over one that already points to an absolute Master outpoint. This tie-break is secondary only: it is consulted after the directional-progress or dual-sided-value comparison has already produced a tie. If distinct mint-origin outputs or distinct candidate LOs remain tied after that, the stack skips the group instead of selecting by indexer order.
+
+This remains a best-effort client-side heuristic for immutable deployed behavior, not an on-chain proof that forged higher-progress descendants cannot exist. Consumers should use resolved `OrderGroup`s from `@ickb/order` rather than hand-pairing order and master cells.
+
 ## Non-Upgradable Deployment
 
-From the start iCKB has been built in the open as a public good. As such iCKB scripts have been deployed in a non-upgradable way. The reason is the following: let's assume iCKB was deployed by type, then whoever controls the lock is hypothetically able to update the binary and steal all the funds. This is not acceptable for a public good such iCKB.
+From the start iCKB has been built in the open as a public good. As such iCKB scripts have been deployed in a non-upgradable way. Concretely, the deployed script references below use `hash_type = data1`: the scripts load code from `cell_deps` by exact cell data hash, so validation is pinned to the deployed binary bytes. By contrast, `hash_type = type` loads code by type-script hash, so the referenced code cell can be replaced by another cell with the same type script and different contents, with the replacement policy then governed by that code cell's lock script. This `data1` reference mode is what makes the live deployment non-upgradable.
 
-Since no entity owns the deployed scripts, the scripts are deployed with a `secp256k1_blake160` zero lock, an unlockable lock.
+As a separate deployment detail, the published binary cells themselves are locked with a `secp256k1_blake160` zero lock, an unspendable lock. This does not make the live script references upgradable, because under `data1` the protocol points to the deployed bytes directly; it only means no trusted operator key remains embedded as an owner of the binary cells.
 
 Additionally, it has been created the following dependency group:
 
