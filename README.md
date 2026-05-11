@@ -208,7 +208,7 @@ Summing up, in the first deposit phase, these rules must be followed:
 - A **deposit** is defined as Nervos DAO deposit with an iCKB Logic Lock `{CodeHash: iCKB Logic Hash, HashType: Data1, Args: Empty}`.
 - A single deposit unoccupied capacity cannot be lower than `1000 CKB` nor higher than `1M CKB`.
 - A group of same size deposits must be accounted by a receipt.
-- A **receipt** is defined as a cell with iCKB Logic Type `{CodeHash: iCKB Logic Hash, HashType: Data1, Args: Empty}`, the first 16 bytes of cell data are reserved for:
+- A **receipt** is defined as a cell with iCKB Logic Type `{CodeHash: iCKB Logic Hash, HashType: Data1, Args: Empty}`, the first 12 bytes of cell data are reserved for:
   - `deposit_quantity` keeps track of the quantity of deposits (4 bytes)
   - `deposit_amount` keeps track of the single deposit unoccupied capacity (8 bytes)
 - No more than 64 output cells are allowed under the [currently deployed NervosDAO script](https://github.com/nervosnetwork/ckb-system-scripts/blob/814eb82c44f560dbdad2be97eb85464062920237/c/dao.c#L565-L591).
@@ -789,7 +789,9 @@ In the current stack, the directional `progress` scalar is computed from the ass
 
 This is why the same resolver can implement both heuristics without branching on a second selection algorithm: Directional LO rank by irreversible progress, while Dual-Sided LO rank by normalized value because for that shape `progress == normalized value`.
 
-If multiple qualified candidates still tie on that primary score, the current stack applies one last tie-break: prefer a newly minted LO over a non-mint LO. In practice this means preferring a candidate that still carries the mint-relative Master reference over one that already points to an absolute Master outpoint. This tie-break is secondary only: it is consulted after the directional-progress or dual-sided-value comparison has already produced a tie.
+If multiple qualified candidates still tie on that primary score, the current stack applies one last tie-break: prefer a newly minted LO over a non-mint LO. In practice this means preferring a candidate that still carries the mint-relative Master reference over one that already points to an absolute Master outpoint. This tie-break is secondary only: it is consulted after the directional-progress or dual-sided-value comparison has already produced a tie. If distinct mint-origin outputs or distinct candidate LOs remain tied after that, the stack skips the group instead of selecting by indexer order.
+
+This remains a best-effort client-side heuristic for immutable deployed behavior, not an on-chain proof that forged higher-progress descendants cannot exist. Consumers should use resolved `OrderGroup`s from `@ickb/order` rather than hand-pairing order and master cells.
 
 ## Non-Upgradable Deployment
 
