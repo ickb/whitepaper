@@ -18,9 +18,7 @@ The Nervos DAO is possibly the most important smart-contract of Nervos Layer 1 (
 
 There exists untapped potential in the Nervos ecosystem for a protocol that can liquify Nervos DAO accrued interest and bridge it from L1 to L2. This protocol could enable CKB-based [Initial Stake Pool Offerings](https://www.meld.com/ispo) (ISPO), where users can lock CKB to support new early stage projects without losing their original CKB deposit.
 
-The protocol could also be used to enable a community voting mechanism with funds locked in the Nervos DAO, as well as a multitude more L1 & L2 applications!
-
-Looking further ahead, this protocol could also enable Godwoken to switch from pCKB to a new native token that protects every Godwoken user from CKB issuance.
+The protocol could also be used to enable a community voting mechanism with funds locked in the Nervos DAO, as well as a multitude more L1, L2, and bridge applications!
 
 ### dCKB (Unmaintained)
 
@@ -934,13 +932,13 @@ At the inception of iCKB, the following were the intended possible use cases:
 
 - CKB-based Initial Stake Pool Offerings.
 - The official Nervos DAO community voting mechanism.
-- Godwoken switch from pCKB to iCKB, protecting users from CKB issuance.
-- A multitude more L1 & L2 applications!
+- iCKB as a value-accruing asset for Nervos L2 and bridge applications.
+- A multitude more L1, L2, and bridge applications!
 
 A few things have changed since inception. These are the updated use cases:
 
 - ISPO is a well-thought-out model, but Nervos currently already has a Community Fund, so the need has been addressed. Developing an ISPO now may provide different paths & rules for accessing funding.
-- Switching from pCKB to iCKB would give free interest to any CKB holder on Godwoken, but Godwoken never really seems to have found its use case.
+- iCKB can remain useful in Nervos L2 and bridge contexts because it keeps its value and continues accruing Nervos DAO interest while staying liquid.
 - In the short term the most impactful iCKB result will be that more users will feel comfortable staking into Nervos DAO by using iCKB. More CKB will be locked into Nervos DAO, which is an achievement in itself.
 - In the medium term more decentralized finance protocols will integrate iCKB. So users will be able to receive the interest paid out by both these protocols and Nervos DAO.
 - In the long term, more UTXO chains will be integrated with Nervos thanks to [RGB++, and iCKB is ideally positioned to take advantage of this](https://github.com/ckb-cell/RGBPlusPlus-design/blob/main/docs/light-paper-en.md#coins). Users from other chains will be able to receive the interest paid out by Nervos DAO while remaining liquid. Protocols from other chains will also be able to build on top of iCKB, so users will be able to receive the interest paid out by both those protocols and Nervos DAO.
