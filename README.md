@@ -12,7 +12,7 @@ If you would like to try out the DApp to get an idea on how it works, [iCKB DApp
 
 ### Nervos DAO Illiquidity
 
-The Nervos DAO is possibly the most important smart-contract of Nervos Layer 1 (L1). A CKB holder can lock his CKB in the Nervos DAO in exchange for a receipt of that specific deposit. Every 180 epochs (~30 days) the depositor has the option of exchanging his receipt to unlock his initial deposit plus accrued interest. This creates an illiquidity for the depositor while the CKB is locked.
+The Nervos DAO is possibly the most important smart-contract of Nervos Layer 1 (L1). A CKB holder can lock their CKB in the Nervos DAO in exchange for a receipt of that specific deposit. Every 180 epochs (~30 days) the depositor has the option of exchanging their receipt to unlock their initial deposit plus accrued interest. This creates an illiquidity for the depositor while the CKB is locked.
 
 ### Untapped Potential
 
@@ -123,7 +123,7 @@ In this way a few goals are achieved:
 
 Let’s assume there is no requirement on deposit size, so as in Nervos DAO users can choose the deposit size they prefer. Then an attacker who can borrow a big enough capital can simply attack by repeating the following two steps:
 
-- Deposit CKB for iCKB in deposits as big as the entirety of his capital.
+- Deposit CKB for iCKB in deposits as big as the entirety of their capital.
 - Exchange iCKB for smaller CKB deposits.
 
 This would greatly reduce the quality of the service for everyone, as the only remaining deposits would be as big as or bigger than the attacker's capital and since it’s impossible to withdraw partially from a Nervos DAO deposit, this would greatly hamper use of the protocol.
@@ -166,15 +166,15 @@ This shows that the iCKB/CKB exchange rate only depends on a few constants and t
 
 ### Deposit
 
-In Nervos DAO, a deposit is a single transaction in which a CKB holder locks his CKB in exchange for a Nervos DAO receipt of that **specific deposit**.
+In Nervos DAO, a deposit is a single transaction in which a CKB holder locks their CKB in exchange for a Nervos DAO receipt of that **specific deposit**.
 
-In the proposed protocol, a deposit is the process in which a CKB holder locks his CKB in exchange for iCKB tokens.
+In the proposed protocol, a deposit is the process in which a CKB holder locks their CKB in exchange for iCKB tokens.
 
 This process can't happen in a single transaction due to a Nervos L1 technical choice: as seen from the [previous section](#ickbckb-exchange-rate-calculation), to mint the iCKB equivalent for a deposit the protocol needs to access the current [`accumulated rate`](https://github.com/nervosnetwork/rfcs/blob/master/rfcs/0023-dao-deposit-withdraw/0023-dao-deposit-withdraw.md#calculation), which is defined in the deposit's block header. However, Nervos L1 is [off-chain deterministic](https://justjjy.com/Offchain-determinism), so [the current block header cannot be accessed while validating a transaction](https://github.com/nervosnetwork/ckb/blob/f93b498379173353b5804818b33227cc302ffd6a/script/src/syscalls/load_header.rs#L72).
 
 Thus the protocol is forced to split a deposit into two phases:
 
-1. In the first phase, the CKB holder locks his CKB in exchange for a protocol receipt of the **specific amount deposited**.
+1. In the first phase, the CKB holder locks their CKB in exchange for a protocol receipt of the **specific amount deposited**.
 2. In the second phase, the deposit's header block is available, so the protocol receipt can be transformed into iCKB tokens.
 
 ### Deposit Phase 1
@@ -190,7 +190,7 @@ In particular, deposits bigger than the standard deposit size are actively disin
 
 On the other side, deposits smaller than the standard deposit size are intrinsically disincentivized by L1 dynamics. As deposits get smaller they incur a bigger penalty in the form of unaccounted occupied capacity. Additionally, the minimum unoccupied capacity per single deposit is fixed at `1,000 CKB`. This lower bound prevents users from making deposits too detrimental to themselves.
 
-Taking these incentives into consideration, at least 90% of the deposit amount is always converted. Of course the optimal strategy for a depositor is to split his CKB into standard deposits.
+Taking these incentives into consideration, at least 90% of the deposit amount is always converted. Of course the optimal strategy for a depositor is to split their CKB into standard deposits.
 
 Since having a separate receipt per deposit cell would be capital inefficient, the protocol allows multiple deposits to be accounted for with a single receipt. An iCKB receipt accounts for a group of deposits with the same size, it just contains the single deposit unoccupied CKB capacity and the quantity of the accounted deposits. In a transaction output there can be many receipt cells and possibly more than one receipt for the same deposit size.
 
@@ -727,9 +727,9 @@ One transaction can include many actions from different Limit Order phases. For 
 
 ## Exit Under Low Liquidity
 
-The deposit, withdrawal, and limit-order mechanisms above compose into an exit flow for low-liquidity cases. A user should first withdraw the best available combination of whole deposits his iCKB can cover, and only consider a lossy action for the remaining iCKB.
+The deposit, withdrawal, and limit-order mechanisms above compose into an exit flow for low-liquidity cases. A user should first withdraw the best available combination of whole deposits their iCKB can cover, and only consider a lossy action for the remaining iCKB.
 
-First, the user withdraws from the deposits available in the iCKB pool that his iCKB can cover. If no available combination of whole deposits exactly matches, or stays within, the user's balance, the remaining iCKB can be offered as a limit order from iCKB to CKB. That order lets another participant satisfy the mismatch without creating a non-standard deposit.
+First, the user withdraws from the deposits available in the iCKB pool that their iCKB can cover. If no available combination of whole deposits exactly matches, or stays within, the user's balance, the remaining iCKB can be offered as a limit order from iCKB to CKB. That order lets another participant satisfy the mismatch without creating a non-standard deposit.
 
 If the order remains unmatched, receipts can fill the gap. When the minimum and maximum deposit sizes permit it, a user or matcher creates one or more non-standard deposits. After the deposit block header is available, those receipts have exact iCKB values. A withdrawal can then consume the remaining iCKB and receipts together to request withdrawal from the available deposit.
 
@@ -740,7 +740,7 @@ For example, assume only standard `100,000 iCKB` deposits are available and a us
 3. If no matcher takes that order, the user creates a non-standard deposit intended to produce a receipt worth slightly more than `30,000 iCKB`.
 4. After inclusion, the user combines the remaining `70,000 iCKB` and `30,000 iCKB` from that receipt to request withdrawal from another `100,000 iCKB` deposit.
 
-The `30,000 iCKB` receipt share represents CKB already added to the pool by the new deposit. It balances the second `100,000 iCKB` withdrawal; the recovered value comes from the old `70,000 iCKB`. The loss is the `82 CKB` occupied by the new non-standard deposit cell, plus transaction fees. The user targets slightly above `30,000 iCKB`; any excess iCKB output from that withdrawal/conversion flow can be burned in a separate xUDT-only cleanup to reclaim the token cell's occupied CKB capacity when converting it would cost more than the dust is worth.
+The `30,000 iCKB` receipt share represents CKB already added to the pool by the new deposit. It balances the second `100,000 iCKB` withdrawal; the recovered value comes from the old `70,000 iCKB`. The loss is the `82 CKB` occupied by the new non-standard deposit cell, plus transaction fees. The user targets slightly above `30,000 iCKB`. Any excess iCKB output from that withdrawal/conversion flow can be burned in a separate xUDT-only cleanup to reclaim the token cell's occupied CKB capacity when converting it would cost more than the dust is worth.
 
 This path is a last resort. Small non-standard deposits lose proportionally more value to occupied capacity, and the receipt value cannot be known exactly before inclusion because it depends on the deposit block header.
 
@@ -790,7 +790,12 @@ Dual-Sided LOs (those with two ratios) can increase in value. They increase in v
 
 ### Implementation
 
-The current stack-side mitigation lives in pinned `@ickb/order` code: [`OrderManager.findOrders(...)`](https://github.com/ickb/stack/blob/43ee8d8a57009f3dd731eb1045d29688de2a84f8/packages/order/src/order.ts#L574-L630) groups live orders with masters, [`resolveOrderGroup(...)`](https://github.com/ickb/stack/blob/43ee8d8a57009f3dd731eb1045d29688de2a84f8/packages/order/src/order.ts#L735-L760) loads the origin and builds the final `OrderGroup`, [`findOrigin(...)`](https://github.com/ickb/stack/blob/43ee8d8a57009f3dd731eb1045d29688de2a84f8/packages/order/src/order.ts#L763-L809) recovers the mint-origin order from the master cell's transaction, and [`OrderCell.resolve(...)`](https://github.com/ickb/stack/blob/43ee8d8a57009f3dd731eb1045d29688de2a84f8/packages/order/src/cells.ts#L235-L279) validates and ranks descendant orders.
+The current stack-side mitigation lives in pinned `@ickb/order` code:
+
+- [`OrderManager.findOrders(...)`](https://github.com/ickb/stack/blob/43ee8d8a57009f3dd731eb1045d29688de2a84f8/packages/order/src/order.ts#L574-L630) groups live orders with masters.
+- [`resolveOrderGroup(...)`](https://github.com/ickb/stack/blob/43ee8d8a57009f3dd731eb1045d29688de2a84f8/packages/order/src/order.ts#L735-L760) loads the origin and builds the final `OrderGroup`.
+- [`findOrigin(...)`](https://github.com/ickb/stack/blob/43ee8d8a57009f3dd731eb1045d29688de2a84f8/packages/order/src/order.ts#L763-L809) recovers the mint-origin order from the master cell's transaction.
+- [`OrderCell.resolve(...)`](https://github.com/ickb/stack/blob/43ee8d8a57009f3dd731eb1045d29688de2a84f8/packages/order/src/cells.ts#L235-L279) validates and ranks descendant orders.
 
 The current stack keeps the same front-end strategy in `@ickb/order`, but makes the selection rule explicit in one resolver.
 
