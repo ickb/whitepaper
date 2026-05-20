@@ -540,7 +540,12 @@ Interacting directly with the iCKB protocol has some limitations:
 - Nervos DAO doesn't allow to partially withdraw from a deposit.
 - There is no easy way to merge multiple user intentions within a single deposit or withdrawal.
 
-To abstract over Nervos DAO and iCKB protocol limitations, the Limit Order Script implements limit order logic, abstracts user intentions, and can be matched partially or completely by anyone, similarly to an ACP lock. This lock aims to be compatible with all types that follow the sUDT convention of storing the amount in the first 16 bytes of cell data and storing no data in the witness, currently sUDT and partially xUDT. If a UDT needs to store data in the witness, then it should not be used in conjunction with the limit order script. In a transaction, there may be multiple order cells. This script's lifecycle consists of three kinds of transactions: Mint, Match and Melt.
+To abstract over Nervos DAO and iCKB protocol limitations, the Limit Order Script implements limit order logic, abstracts user intentions, and can be matched partially or completely by anyone, similarly to an ACP lock. This lock aims to be compatible with all types that follow the sUDT convention:
+
+- Store the amount in the first 16 bytes of cell data.
+- Store no data in the witness.
+
+Currently, this includes sUDT and xUDT without extension data. If a UDT needs to store data in the witness, then it should not be used in conjunction with the limit order script. In a transaction, there may be multiple order cells. This script's lifecycle consists of three kinds of transactions: Mint, Match and Melt.
 
 **Limit Order data molecule encoding:**
 
@@ -740,7 +745,12 @@ For example, assume only standard `100,000 iCKB` deposits are available and a us
 3. If no matcher takes that order, the user creates a non-standard deposit intended to produce a receipt worth slightly more than `30,000 iCKB`.
 4. After inclusion, the user combines the remaining `70,000 iCKB` and `30,000 iCKB` from that receipt to request withdrawal from another `100,000 iCKB` deposit.
 
-The `30,000 iCKB` receipt share represents CKB already added to the pool by the new deposit. It balances the second `100,000 iCKB` withdrawal; the recovered value comes from the old `70,000 iCKB`. The loss is the `82 CKB` occupied by the new non-standard deposit cell, plus transaction fees. The user targets slightly above `30,000 iCKB`. Any excess iCKB output from that withdrawal/conversion flow can be burned in a separate xUDT-only cleanup to reclaim the token cell's occupied CKB capacity when converting it would cost more than the dust is worth.
+The `30,000 iCKB` receipt share represents CKB already added to the pool by the new deposit. It balances the second `100,000 iCKB` withdrawal; the recovered value comes from the old `70,000 iCKB`. The unrecovered overhead is:
+
+- The `82 CKB` occupied by the new non-standard deposit cell.
+- Transaction fees.
+
+The user targets slightly above `30,000 iCKB`. Any excess iCKB output from that withdrawal/conversion flow can be burned in a separate xUDT-only cleanup to reclaim the token cell's occupied CKB capacity when converting it would cost more than the dust is worth.
 
 This path is a last resort. Small non-standard deposits lose proportionally more value to occupied capacity, and the receipt value cannot be known exactly before inclusion because it depends on the deposit block header.
 
