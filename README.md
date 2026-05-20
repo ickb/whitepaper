@@ -732,11 +732,11 @@ One transaction can include many actions from different Limit Order phases. For 
 
 ## Exit Under Low Liquidity
 
-The deposit, withdrawal, and limit-order mechanisms above compose into an exit flow for low-liquidity cases. A user should first withdraw the best available combination of whole deposits their iCKB can cover, and only consider a lossy action for the remaining iCKB.
+The deposit, withdrawal, and limit-order mechanisms above compose into an exit flow for low-liquidity cases. A user should first withdraw the best available combination of whole deposits, then only consider a lossy action for the remaining iCKB:
 
-First, the user withdraws from the deposits available in the iCKB pool that their iCKB can cover. If no available combination of whole deposits exactly matches, or stays within, the user's balance, the remaining iCKB can be offered as a limit order from iCKB to CKB. That order lets another participant satisfy the mismatch without creating a non-standard deposit.
-
-If the order remains unmatched, receipts can fill the gap. When the minimum and maximum deposit sizes permit it, a user or matcher creates one or more non-standard deposits. After the deposit block header is available, those receipts have exact iCKB values. A withdrawal can then consume the remaining iCKB and receipts together to request withdrawal from the available deposit.
+- **Whole-deposit withdrawal**: withdraw the available deposit combination with the greatest total iCKB value that does not exceed the user's balance. In other words, choose deposits where `sum(deposit_iCKB_value) <= iCKB_balance` and maximize `sum(deposit_iCKB_value)`.
+- **Limit-order fallback**: if no whole-deposit combination exactly matches the user's balance, offer the remaining iCKB as a limit order from iCKB to CKB. That order lets another participant satisfy the mismatch without creating a non-standard deposit.
+- **Receipt top-up**: if the order remains unmatched and the minimum and maximum deposit sizes permit it, a user or matcher creates one or more non-standard deposits. After the deposit block header is available, those receipts have exact iCKB values. A withdrawal can then consume the remaining iCKB and receipts together to request withdrawal from an available deposit.
 
 For example, assume only standard `100,000 iCKB` deposits are available and a user holds `170,000 iCKB`:
 
