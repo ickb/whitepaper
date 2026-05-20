@@ -750,7 +750,9 @@ This path is a last resort. Small non-standard deposits lose proportionally more
 
 ## Audit
 
-This whitepaper and the [code of iCKB Scripts](https://github.com/ickb/v1-core/tree/master/scripts) has been both internally reviewed by individuals with deep experience in Nervos L1 and [externally audited by the Scalebit team](http://scalebit.xyz/reports/20240911-ICKB-Final-Audit-Report.pdf), an internationally recognized blockchain security team.
+This whitepaper and the [iCKB Scripts code](https://github.com/ickb/contracts/tree/master/scripts) have been internally reviewed by individuals with deep experience in Nervos L1 and externally audited by [the Scalebit team](http://scalebit.xyz/reports/20240911-ICKB-Final-Audit-Report.pdf), an internationally recognized blockchain security team.
+
+A later local executable review of the deployed release binaries was completed on 2026-05-01 and is available in the iCKB contracts repository as [`20260501-ICKB-Audit-Report.md`](https://github.com/ickb/contracts/blob/master/20260501-ICKB-Audit-Report.md). That review covers `iCKB Logic`, `Owned Owner`, `Limit Order`, and the shared `utils` crate.
 
 ## Unsigned Lock Witnesses Malleability
 
@@ -792,7 +794,7 @@ Dual-Sided LO (those with two ratios) can increase in value. They increase in va
 
 ### Implementation
 
-An implementation of this patch can be found in [iCKB/V1-Core](https://github.com/ickb/v1-core/commit/1d90b1fb37d5a2a359372300c9e4c9a9b29b4459).
+The current stack-side mitigation lives in pinned `@ickb/order` code: [`OrderManager.findOrders(...)`](https://github.com/ickb/stack/blob/43ee8d8a57009f3dd731eb1045d29688de2a84f8/packages/order/src/order.ts#L574-L630) groups live orders with masters, [`resolveOrderGroup(...)`](https://github.com/ickb/stack/blob/43ee8d8a57009f3dd731eb1045d29688de2a84f8/packages/order/src/order.ts#L735-L760) loads the origin and builds the final `OrderGroup`, [`findOrigin(...)`](https://github.com/ickb/stack/blob/43ee8d8a57009f3dd731eb1045d29688de2a84f8/packages/order/src/order.ts#L763-L809) recovers the mint-origin order from the master cell's transaction, and [`OrderCell.resolve(...)`](https://github.com/ickb/stack/blob/43ee8d8a57009f3dd731eb1045d29688de2a84f8/packages/order/src/cells.ts#L235-L279) validates and ranks descendant orders.
 
 The current stack keeps the same front-end strategy in `@ickb/order`, but makes the selection rule explicit in one resolver.
 
@@ -954,7 +956,7 @@ A few things changed since the inception, these are the updated use cases:
 - [Thread for iCKB development on Discord](https://discord.com/channels/657799690070523914/980237827122032730)
 - [iCKB AMA on Reddit](https://old.reddit.com/r/NervosNetwork/comments/1erw6v8/ickb_ama/)
 - [iCKB journey into CoBuild on Nervos Talk](https://talk.nervos.org/t/ickb-journey-into-cobuild/7918)
-- [iCKB Scripts code](https://github.com/ickb/v1-core/tree/master/scripts)
+- [iCKB Scripts code](https://github.com/ickb/contracts/tree/master/scripts)
 - [Scalebit Audit](https://scalebit.xyz/reports/20240911-ICKB-Final-Audit-Report.pdf)
 - [Initial proposal on Nervos Talk](https://talk.nervos.org/t/looking-for-feedback-ickb-a-tokenization-of-nervosdao-deposits/6772)
 - [Is wstCKB just another iCKB?](https://github.com/stablepp/media-kit/issues/1)
