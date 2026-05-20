@@ -729,6 +729,25 @@ One transaction can mix and include many actions from different Limit Order phas
 2. Match many existing Limit Orders.
 3. Melt many old Limit Orders.
 
+## Exit Under Low Liquidity
+
+The deposit, withdrawal, and limit-order mechanisms above compose into an exit flow for low-liquidity cases. A user should first withdraw the best available combination of whole deposits his iCKB can cover, and only consider a lossy action for the remaining iCKB.
+
+First, the user withdraws from the deposits available in the iCKB pool that his iCKB can cover. If no available combination of whole deposits exactly matches, or stays within, the user's balance, the remaining iCKB can be offered as a limit order from iCKB to CKB. That order lets another participant satisfy the mismatch without creating a non-standard deposit.
+
+If the order remains unmatched, receipts can fill the gap. When the minimum and maximum deposit sizes permit it, a user or matcher creates one or more non-standard deposits. After the deposit block header is available, those receipts have exact iCKB values. A withdrawal can then consume the remaining iCKB and receipts together to request withdrawal from the available deposit.
+
+For example, assume only standard `100,000 iCKB` deposits are available and a user holds `170,000 iCKB`:
+
+1. The user withdraws one `100,000 iCKB` deposit first, leaving `70,000 iCKB`.
+2. The user leaves the `70,000 iCKB` remainder as a limit order from iCKB to CKB.
+3. If no matcher takes that order, the user creates a non-standard deposit intended to produce a receipt worth slightly more than `30,000 iCKB`.
+4. After inclusion, the user combines the remaining `70,000 iCKB` and `30,000 iCKB` from that receipt to request withdrawal from another `100,000 iCKB` deposit.
+
+The `30,000 iCKB` receipt share represents CKB already added to the pool by the new deposit. It balances the second `100,000 iCKB` withdrawal; the recovered value comes from the old `70,000 iCKB`. The loss is the `82 CKB` occupied by the new non-standard deposit cell, plus transaction fees. The user targets slightly above `30,000 iCKB`; any excess iCKB output from that withdrawal/conversion flow can be burned in a separate xUDT-only cleanup to reclaim the token cell's occupied CKB capacity when converting it would cost more than the dust is worth.
+
+This path is a last resort. Small non-standard deposits lose proportionally more value to occupied capacity, and the receipt value cannot be known exactly before inclusion because it depends on the deposit block header.
+
 ## Audit
 
 This whitepaper and the [code of iCKB Scripts](https://github.com/ickb/v1-core/tree/master/scripts) has been both internally reviewed by individuals with deep experience in Nervos L1 and [externally audited by the Scalebit team](http://scalebit.xyz/reports/20240911-ICKB-Final-Audit-Report.pdf), an internationally recognized blockchain security team.
