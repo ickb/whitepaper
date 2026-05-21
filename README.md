@@ -6,56 +6,54 @@ If you would like to listen to an introduction of the project before diving in, 
 
 ## DApp
 
-If you would like to try out the DApp to get an idea on how it works, [iCKB DApp is live on both mainnet and testnet](http://ickb.org).
+If you would like to try out the DApp to get an idea on how it works, [iCKB DApp is live on both mainnet and testnet](https://ickb.org).
 
 ## Problem
 
-### NervosDAO Illiquidity
+### Nervos DAO Illiquidity
 
-The NervosDAO is possibly the most important smart-contract of Nervos Layer 1 (L1). A CKB holder can lock his CKB in the NervosDAO in exchange for a receipt of that specific deposit. Every 180 epochs (~30 days) the depositor has the option of exchanging his receipt to unlock his initial deposit plus accrued interest. This creates an illiquidity for the depositor while the CKB is locked.
+The Nervos DAO is possibly the most important smart-contract of Nervos Layer 1 (L1). A CKB holder can lock their CKB in the Nervos DAO in exchange for a receipt of that specific deposit. Every 180 epochs (~30 days) the depositor has the option of exchanging their receipt to unlock their initial deposit plus accrued interest. This creates an illiquidity for the depositor while the CKB is locked.
 
 ### Untapped Potential
 
-There exists untapped potential in the Nervos ecosystem for a protocol that can liquify NervosDAO accrued interest and bridge it from L1 to L2. This protocol could enable CKB-based [Initial Stake Pool Offerings](https://www.meld.com/ispo) (ISPO), where users can lock CKB to support new early stage projects without losing their original CKB deposit.
+There exists untapped potential in the Nervos ecosystem for a protocol that can liquify Nervos DAO accrued interest and bridge it from L1 to L2. This protocol could enable CKB-based [Initial Stake Pool Offerings](https://www.meld.com/ispo) (ISPO), where users can lock CKB to support new early stage projects without losing their original CKB deposit.
 
-The protocol could also be used to enable a community voting mechanism with funds locked in the NervosDAO, as well as a multitude more L1 & L2 applications!
-
-Looking far away, this protocol could also enable Godwoken switch from pCKB to a new native token that protects every Godwoken user from CKB issuance.
+The protocol could also be used to enable a community voting mechanism with funds locked in the Nervos DAO, as well as a multitude more L1, L2, and bridge applications!
 
 ### dCKB (Unmaintained)
 
-In the past there has been an effort to tackle this challenge by [NexisDAO with dCKB](https://docs.nexisdao.com/nexisdao/mint-dckb). Their approach is to tokenize the holder receipt, which in turn becomes tradeable and so the holder keeps being liquid. The issue with their approach is that only the original owner can unlock the deposit. Judging by their [GitHub repository's issues](https://github.com/NexisDao/NexisDao-core/issues), dCKB does not appear to be actively maintained.
+In the past there has been an effort to tackle this challenge by [NexisDAO with dCKB](https://docs.nexisdao.com/nexisdao/mint-dckb). Their approach is to tokenize the holder receipt, which in turn becomes tradeable, so the holder remains liquid. The issue with their approach is that only the original owner can unlock the deposit. Judging by their [GitHub repository's issues](https://github.com/NexisDao/NexisDao-core/issues), dCKB does not appear to be actively maintained.
 
 ### wstCKB (Under Development)
 
 Currently there is a new effort to tackle this challenge by Stable++. They are developing a new solution behind closed doors and as such not much information is publicly available on wstCKB, [except for](https://www.reddit.com/r/NervosNetwork/comments/1etnlqv/stable_part_2/):
 
-> Stable++ also introduces Liquidity Staking through Nervos Dao. Users can stake CKB in exchange for wstCKB, allowing them to earn staking rewards while still being able to use their wstCKB for investments without losing liquidity.
+> Stable++ also introduces Liquidity Staking through Nervos DAO. Users can stake CKB in exchange for wstCKB, allowing them to earn staking rewards while still being able to use their wstCKB for investments without losing liquidity.
 
-At direct question on their public Telegram group, [Alive24 explained](https://t.me/Stablepp/881):
+When asked directly on their public Telegram group, [Alive24 explained](https://t.me/Stablepp/881):
 
 > At the moment, as LST is still under development [...] If anything **disclosable**, we attempt to make wstCKB in a way similar to wstETH in terms of rebasing mechanism and anonymous Nervos DAO cell deposit and withdrawal. Any further details are still under development and adjustment. [...] I've read the proposal today and we found a lot in common! Thanks for the advice and definitely it would be of inspirations.
 
-From the information now available seems wstCKB is staying clear of dCKB mistakes and closely following iCKB steps.
+From the information currently available, wstCKB seems to avoid dCKB's mistakes and closely follow iCKB's approach.
 
-Which brings the question: [Is really worth developing an iCKB look-alike and doubling the effort?](https://github.com/stablepp/media-kit/issues/1)
+This brings the question: [Is it really worth developing an iCKB look-alike and doubling the effort?](https://github.com/stablepp/media-kit/issues/1)
 
-Let's say, a wstCKB too similar to iCKB is developed, the result would be a split liquidity between iCKB and wstCKB, so smaller Deposit Pool size for both, which would bring the following downsides for everyone:
+If wstCKB is too similar to iCKB, the result would be split liquidity between iCKB and wstCKB, reducing the Deposit Pool size for both and bringing the following downsides for everyone:
 
-1. Longer withdrawal wait time as the temporal density of deposits maturity depends on Deposit Pool size.
+1. Longer withdrawal wait time because the temporal density of deposit maturities depends on Deposit Pool size.
 2. [Busiwork Attack feasibility](https://github.com/ickb/whitepaper/issues/8).
 
 ## Solution
 
 ### Enter iCKB
 
-The **inflation-protected CKB** (iCKB) is a Nervos L1 [xUDT token](https://github.com/nervosnetwork/rfcs/blob/master/rfcs/0052-extensible-udt/0052-extensible-udt.md) responsible for protecting users against [Nervos secondary issuance inflation](https://www.nervos.org/knowledge-base/understanding_nervos_ckb_issuance_model#secondary_issuance) like NervosDAO, while at the sime time being a liquid asset. In this whitepaper, the **inflation-protected CKB** will be referred as iCKB.
+The **inflation-protected CKB** (iCKB) is a Nervos L1 [xUDT token](https://github.com/nervosnetwork/rfcs/blob/master/rfcs/0052-extensible-udt/0052-extensible-udt.md) responsible for protecting users against [Nervos secondary issuance inflation](https://www.nervos.org/knowledge-base/understanding_nervos_ckb_issuance_model#secondary_issuance) like Nervos DAO, while at the same time being a liquid asset. In this whitepaper, the **inflation-protected CKB** will be referred to as iCKB.
 
-As with dCKB, iCKB's approach is to tokenize NervosDAO receipts, but with a twist: the protocol owns all the CKB deposits and maintains a pool of them. This means that all the deposits and withdrawals are shared, so anyone can use anyone else's deposit to exit once it's mature.
+As with dCKB, iCKB's approach is to tokenize Nervos DAO receipts, but with a twist: the protocol owns all the CKB deposits and maintains a pool of them. This means that all the deposits and withdrawals are shared, so anyone can use anyone else's deposit to exit once it's mature.
 
-This protocol aims to solve two problems with NervosDAO:
+This protocol aims to solve two problems with Nervos DAO:
 
-- CKB locked in the NervosDAO remains liquid as iCKB can truly be used as a normal currency.
+- CKB locked in the Nervos DAO remains liquid as iCKB can truly be used as a normal currency.
 - iCKB can be converted back to CKB quickly at any time without having to wait for maturity.
 
 ### Water Mill Analogy
@@ -69,35 +67,35 @@ As a [water mill](https://tenor.com/view/water-wheel-mill-gif-19806697) has many
 In the same way, the protocol can have many distinct deposits, each of them constantly moving at different stages of maturity:
 
 - **Collected**: Users deposit CKB and receive iCKB.
-- **Maintained**: Deposits accrue interest in the NervosDAO.
+- **Maintained**: Deposits accrue interest in the Nervos DAO.
 - **Released**: If a user wants to exchange iCKB for CKB, they can use any deposit that is at maturity.
 
 ### Feedback
 
 Jordan Mack's comments on Nervos L1 & iCKB:
-> In a more abstract sense, this doesn't violate any of intentions of the platform. The CKB that is staked is still out of circulation. iCKB does not grant the holder the ability to store data on the blockchain. In the most pure sense, iCKB is enabling the functionality that dCKB was trying to achieve. It better solves the problem because anyone can unlock the original CKB from the NervosDAO using iCKB instead of requiring the original owner to unlock it as with dCKB.
+> In a more abstract sense, this doesn't violate any of intentions of the platform. The CKB that is staked is still out of circulation. iCKB does not grant the holder the ability to store data on the blockchain. In the most pure sense, iCKB is enabling the functionality that dCKB was trying to achieve. It better solves the problem because anyone can unlock the original CKB from the Nervos DAO using iCKB instead of requiring the original owner to unlock it as with dCKB.
 
 ## Team
 
 ### Phroi
 
-I'm a developer, going by the pseudonym Phroi. I'd like to spend my time working on projects that give meaning to my life and improve the life of users. Win-win situations. The best way to interact with me is in a written format, English is not my native language. A bit on the over-thinker side, so much that I'm unwillingly finding vulnerabilities in other people work.
+I'm a developer, going by the pseudonym Phroi. I'd like to spend my time working on projects that give meaning to my life and improve users' lives. Win-win situations. The best way to interact with me is in writing, since English is not my native language. A bit on the over-thinker side, so much that I unwillingly find vulnerabilities in other people's work.
 
 ### Discovering iCKB
 
-During February 2022, while [testing the ground for a NervosDAO based ISPO](https://discord.com/channels/657799690070523914/657799690552606745/943306112889933864), I discovered the untapped need for a token that liquefies and bridges interests from L1 to L2 and so with Jordan Macks's help I started researching its feasibility. It's since then that I'm working on iCKB.
+During February 2022, while [testing the ground for a Nervos DAO based ISPO](https://discord.com/channels/657799690070523914/657799690552606745/943306112889933864), I discovered the untapped need for a token that liquefies and bridges interest from L1 to L2, so with Jordan Mack's help I started researching its feasibility. It's since then that I'm working on iCKB.
 
 ## Diving Into The Protocol
 
 ### On-Chain, Trust-Less and Decentralized
 
-This protocol defines a solid way to exchange between CKB and iCKB. The design aim is to make iCKB as simple, robust and neutral as possible, making it capable of meeting the current and future needs of Nervos users.
+This protocol defines a solid way to exchange between CKB and iCKB. The design aims to make iCKB as simple, robust and neutral as possible, making it capable of meeting the current and future needs of Nervos users.
 
-This protocol lives completely on Nervos Layer 1. It works by wrapping NervosDAO transactions: a deposit is first tracked by its protocol receipt and later on it's converted in its equivalent amount of iCKB.
+This protocol lives completely on Nervos Layer 1. It works by wrapping Nervos DAO transactions: a deposit is first tracked by its protocol receipt and later it is converted into its equivalent amount of iCKB.
 
 ### iCKB/CKB Exchange Rate Idea
 
-The iCKB mechanism for wrapping interest is similar to [Compound's cTokens](https://compound.finance/docs/ctokens). The CKB to iCKB exchange rate is determined by block number. At the genesis block `1 CKB` is equal to `1 iCKB`. As time passes `1 CKB` is slowly worth less than `1 iCKB` at a rate that matches the issuance from the NervosDAO. This is because iCKB is gaining value. An easier way to understand this is to think of:
+The iCKB mechanism for wrapping interest is similar to [Compound's cTokens](https://compound.finance/docs/ctokens). The CKB to iCKB exchange rate is determined by block number. At the genesis block `1 CKB` is equal to `1 iCKB`. As time passes `1 CKB` is slowly worth less than `1 iCKB` at a rate that matches the issuance from the Nervos DAO. This is because iCKB is gaining value. An easier way to understand this is to think of:
 
 - CKB as inflationary
 - iCKB as non-inflationary
@@ -105,7 +103,7 @@ The iCKB mechanism for wrapping interest is similar to [Compound's cTokens](http
 Jordan Mack's comment on this method:
 > That's a clever approach. Thinking of it as iCKB being the base and CKB being what is moving makes it much easier to understand.
 
-The inflation rate of CKB is well defined by the [NervosDAO compensation rate](https://explorer.nervos.org/charts/nominal-apc) and only depends on:
+The inflation rate of CKB is well defined by the [Nervos DAO compensation rate](https://explorer.nervos.org/charts/nominal-apc) and only depends on:
 
 - [The block concept in L1](https://docs.nervos.org/docs/basics/glossary/#block)
 - [The epoch concept in L1](https://docs.nervos.org/docs/basics/glossary/#epoch)
@@ -115,104 +113,104 @@ Therefore, the iCKB/CKB exchange rate will always be precise as determined by th
 
 ### Standard Deposit
 
-As in real life bricks can be used to build houses of any size, in the same way seems natural to establish a reasonably small standard deposit size that can be used to construct deposits of any size.
+As bricks can be used to build houses of any size, it seems natural to establish a reasonably small standard deposit size that can be used to construct deposits of any size.
 
 In this way a few goals are achieved:
 
 - Big deposits, split into standard deposits, increase the overall protocol liquidity.
-- No size mismatch means anybody can use anybody else deposit to withdraw.
+- No size mismatch means anybody can use anybody else's deposit to withdraw.
 - The following form of DoS is prevented:
 
-Let’s assume there is no requirement on deposit size, so as in NervosDAO users can choose the deposit size they prefer. Then an attacker who can borrow a big enough capital can simply attack by repeating the following two steps:
+Let’s assume there is no requirement on deposit size, so as in Nervos DAO users can choose the deposit size they prefer. Then an attacker who can borrow a big enough capital can simply attack by repeating the following two steps:
 
-- Deposit CKB for iCKB in deposits as big as the entirety of his capital.
+- Deposit CKB for iCKB in deposits as big as the entirety of their capital.
 - Exchange iCKB for smaller CKB deposits.
 
-This would greatly reduce the quality of the service for everyone, as the only remaining deposits would be as big or bigger than the attacker capital and since it’s impossible to withdraw partially from a NervosDAO deposit, this would greatly hamper the protocol fruition.
+This would greatly reduce the quality of the service for everyone, as the only remaining deposits would be as big as or bigger than the attacker's capital and since it’s impossible to withdraw partially from a Nervos DAO deposit, this would greatly hamper use of the protocol.
 
 Back to the standard deposit definition, its size could be defined in CKB terms or in iCKB terms:
 
-- Defining it in CKB terms means that as deposits are made in time, every deposit would have a different size due to the NervosDAO interests, so it's not working as intended.
+- Defining it in CKB terms means that as deposits are made over time, every deposit would have a different size due to Nervos DAO interest, so it's not working as intended.
 - Defining it in iCKB terms means that at each block a standard deposit would have the same size both in CKB and iCKB. Of course as time passes, the deposit size would be fixed in iCKB-equivalent terms but gradually increasing in CKB terms.
 
-Let's define the **standard deposit size** as `100000 iCKB`.
+Let's define the **standard deposit size** as `100,000 iCKB`.
 
 ### iCKB/CKB Exchange Rate Calculation
 
-Excluding deposit cell occupied capacity, per definition `100000 iCKB` are equal to `100000 CKB` staked in NervosDAO at the genesis block, let's calculate what this means.
+Excluding deposit cell occupied capacity, per definition `100,000 iCKB` are equal to `100,000 CKB` staked in Nervos DAO at the genesis block, let's calculate what this means.
 
-From the last formula from [NervosDAO RFC Calculation section](https://github.com/nervosnetwork/rfcs/blob/master/rfcs/0023-dao-deposit-withdraw/0023-dao-deposit-withdraw.md#calculation):
+From the last formula from [Nervos DAO RFC Calculation section](https://github.com/nervosnetwork/rfcs/blob/master/rfcs/0023-dao-deposit-withdraw/0023-dao-deposit-withdraw.md#calculation):
 > Nervos DAO compensation can be calculated for any deposited cell. Assuming a Nervos DAO cell is deposited at block `m`, i.e. the `deposit cell` is included at block `m`. One initiates withdrawal and gets phase 1 `withdrawing cell` included at block `n`. The total capacity of the `deposit cell` is `c_t`, the occupied capacity for the `deposit cell` is `c_o`. [...] The maximum withdrawable capacity one can get from this Nervos DAO input cell is:
 >
 > `( c_t - c_o ) * AR_n / AR_m + c_o`
 
-`AR_n` is defined in the [NervosDAO RFC Calculation section](https://github.com/nervosnetwork/rfcs/blob/master/rfcs/0023-dao-deposit-withdraw/0023-dao-deposit-withdraw.md#calculation):
+`AR_n` is defined in the [Nervos DAO RFC Calculation section](https://github.com/nervosnetwork/rfcs/blob/master/rfcs/0023-dao-deposit-withdraw/0023-dao-deposit-withdraw.md#calculation):
 
 > CKB's block header has a particular field named `dao` containing auxiliary information for Nervos DAO's use. Specifically [...] `AR_i`: the current `accumulated rate` at block `i`. `AR_j / AR_i` reflects the CKByte amount if one deposit 1 CKB to Nervos DAO at block `i`, and withdraw at block `j`.
 
 Let's fix a few constants:
 
 - `c_o = 82 CKB` (occupied cell capacity of a standard deposit cell)
-- `c_t = 100082 CKB` (total cell capacity equals the iCKB-equivalent deposit size plus its occupied capacity)
+- `c_t = 100,082 CKB` (total cell capacity equals the iCKB-equivalent deposit size plus its occupied capacity)
 - `AR_0 = 10 ^ 16` (genesis accumulated rate)
 
-So by depositing `100082` CKB at block `0`, **iCKB/CKB exchange ratio** at block `n` is defined as:
+So by depositing `100,082` CKB at block `0`, **iCKB/CKB exchange ratio** at block `n` is defined as:
 
-- `100000 iCKB := 100000 CKB * AR_n / 10 ^ 16` (excluding `82 CKB` of occupied cell capacity)
+- `100,000 iCKB := 100,000 CKB * AR_n / 10 ^ 16` (excluding `82 CKB` of occupied cell capacity)
 
-Conversely, by plugging block `m` as deposit block and block `0` as withdrawal block in NervosDAO's formula, it's possible to calculate how many iCKB are worth `100082` CKB deposited at block `m`:
+Conversely, by plugging block `m` as deposit block and block `0` as withdrawal block in Nervos DAO's formula, it's possible to calculate how much iCKB is worth `100,082` CKB deposited at block `m`:
 
-- `100000 CKB * 10 ^ 16 / AR_m` (excluding `82 CKB` of occupied cell capacity)
+- `100,000 CKB * 10 ^ 16 / AR_m` (excluding `82 CKB` of occupied cell capacity)
 
 This shows that the iCKB/CKB exchange rate only depends on a few constants and the accumulated rate, defined in the deposit's block header.
 
 ### Deposit
 
-In NervosDAO, a deposit is a single transaction in which a CKB holder locks his CKB in exchange for a NervosDAO receipt of that **specific deposit**.
+In Nervos DAO, a deposit is a single transaction in which a CKB holder locks their CKB in exchange for a Nervos DAO receipt of that **specific deposit**.
 
-In the proposed protocol, a deposit is the process in which a CKB holder locks his CKB in exchange for iCKB tokens.
+In the proposed protocol, a deposit is the process in which a CKB holder locks their CKB in exchange for iCKB tokens.
 
-This process can't happen in a single transaction due to a Nervos L1 technical choice: as seen from the [previous section](#ickbckb-exchange-rate-calculation), to mint the iCKB equivalent for a deposit the protocol needs to access the current [`accumulated rate`](https://github.com/nervosnetwork/rfcs/blob/master/rfcs/0023-dao-deposit-withdraw/0023-dao-deposit-withdraw.md#calculation), which is defined in the deposit's block header, then again Nervos L1 is [off-chain deterministic](https://justjjy.com/Offchain-determinism), so [the current block header cannot be accessed while validating a transaction](https://github.com/nervosnetwork/ckb/blob/f93b498379173353b5804818b33227cc302ffd6a/script/src/syscalls/load_header.rs#L72).
+This process can't happen in a single transaction due to a Nervos L1 technical choice: as seen from the [previous section](#ickbckb-exchange-rate-calculation), to mint the iCKB equivalent for a deposit the protocol needs to access the current [`accumulated rate`](https://github.com/nervosnetwork/rfcs/blob/master/rfcs/0023-dao-deposit-withdraw/0023-dao-deposit-withdraw.md#calculation), which is defined in the deposit's block header. However, Nervos L1 is [off-chain deterministic](https://justjjy.com/Offchain-determinism), so [the current block header cannot be accessed while validating a transaction](https://github.com/nervosnetwork/ckb/blob/f93b498379173353b5804818b33227cc302ffd6a/script/src/syscalls/load_header.rs#L72).
 
-Thus the protocol is forced to split a deposit in two phases:
+Thus the protocol is forced to split a deposit into two phases:
 
-1. In the first phase, the CKB holder locks his CKB in exchange for a protocol receipt of the **specific amount deposited**.
+1. In the first phase, the CKB holder locks their CKB in exchange for a protocol receipt of the **specific amount deposited**.
 2. In the second phase, the deposit's header block is available, so the protocol receipt can be transformed into iCKB tokens.
 
 ### Deposit Phase 1
 
 In this first phase the protocol:
 
-- Transforms input CKB into NervosDAO deposit cells locked by iCKB Logic Script, in short a deposit.
-- Awards to the user a protocol receipt of the deposits, effectively wrapping them.
+- Transforms input CKB into Nervos DAO deposit cells locked by the iCKB Logic Script, in short a deposit.
+- Awards the user a protocol receipt for the deposits, effectively wrapping them.
 
-Given the impossibility to access the header in this phase, it cannot exist a strict requirement on deposits iCKB-equivalent size. On the other hand, to achieve higher deposits fungibility and to prevent a certain form of DoS, the protocol needs to incentivize [standard deposits](#standard-deposit).
+Given the impossibility of accessing the header in this phase, there cannot be a strict requirement on deposits' iCKB-equivalent size. On the other hand, to achieve higher deposit fungibility and to prevent a certain form of DoS, the protocol needs to incentivize [standard deposits](#standard-deposit).
 
-In particular, deposits bigger than the standard deposit size are actively disincentivized: the user will receive only 90% of the iCKB amount exceeding a standard deposit. The remaining 10% is offered as a discount to whoever is willing to withdraw from the oversized deposits. Additionally, the maximum unoccupied capacity per single deposit is fixed at `1M CKB`. This upper bound prevents [a certain form of DoS](#standard-deposit), while still leaving enough slack for the standard deposit CKB size to grow for well over a hundred of years.
+In particular, deposits bigger than the standard deposit size are actively disincentivized: the user will receive only 90% of the iCKB amount exceeding a standard deposit. The remaining 10% is offered as a discount to whoever is willing to withdraw from the oversized deposits. Additionally, the maximum unoccupied capacity per single deposit is fixed at `1,000,000 CKB`. This upper bound prevents [a certain form of DoS](#standard-deposit), while still leaving enough slack for the standard deposit CKB size to grow for well over a hundred years.
 
-On the other side, deposits smaller than the standard deposit size are intrinsically disincentivized by L1 dynamics. As deposits gets smaller they incur a bigger penalty in form of unaccounted occupied capacity. Additionally, the minimum unoccupied capacity per single deposit is fixed at `1000 CKB`. This lower bound prevents users from making deposits too detrimental to themselves.
+On the other side, deposits smaller than the standard deposit size are intrinsically disincentivized by L1 dynamics. As deposits get smaller they incur a bigger penalty in the form of unaccounted occupied capacity. Additionally, the minimum unoccupied capacity per single deposit is fixed at `1,000 CKB`. This lower bound prevents users from making deposits too detrimental to themselves.
 
-Taking in consideration these incentives, at least 90% of the deposit amount is always converted. Of course the optimal strategy for a depositor is to split his CKB into standard deposits.
+Taking these incentives into consideration, at least 90% of the deposit amount is always converted. Of course the optimal strategy for a depositor is to split their CKB into standard deposits.
 
-Since having a separate receipt per deposit cell would be capital inefficient, the protocol allows to account multiple deposit with a single receipt. An iCKB receipt accounts for a group of deposits with the same size, it just contains the single deposit unoccupied CKB capacity and the quantity of the accounted deposits. In a transaction output there can be many receipt cells and possibly more than one receipt for the same deposit size.
+Since having a separate receipt per deposit cell would be capital inefficient, the protocol allows multiple deposits to be accounted for with a single receipt. An iCKB receipt accounts for a group of deposits with the same size, it just contains the single deposit unoccupied CKB capacity and the quantity of the accounted deposits. In a transaction output there can be many receipt cells and possibly more than one receipt for the same deposit size.
 
-For simplicity [a transaction containing NervosDAO script is currently limited to `64` output cells](https://github.com/nervosnetwork/ckb-system-scripts/blob/814eb82c44f560dbdad2be97eb85464062920237/c/dao.c#L38-L41) so that processing is simplified. This limitation may be relaxed later on in a future NervosDAO script update.
+For simplicity [a transaction containing Nervos DAO script is currently limited to `64` output cells](https://github.com/nervosnetwork/ckb-system-scripts/blob/814eb82c44f560dbdad2be97eb85464062920237/c/dao.c#L38-L41) so that processing is simplified. This limitation may be relaxed later on in a future Nervos DAO script update.
 
 In a receipt cell data:
 
-- The second `8 bytes` store the deposit unoccupied capacity, which is the single deposit capacity minus its occupied capacity, the actual `deposit_amount`. A single receipt tracks a group of deposits with same unoccupied capacity in the current tx output. Multiple receipts for a specific unoccupied capacity may be created where each one keep track of a different group of deposits.
-- The first `4 bytes` store the quantity of deposits with same unoccupied capacity being tracked in the tx output. A tx may create many deposits with the same unoccupied capacity. This counter keeps track of how many deposits with the same unoccupied capacity are being tracking in the current tx by this specific receipt.
+- The second `8 bytes` store the deposit unoccupied capacity, which is the single deposit capacity minus its occupied capacity, the actual `deposit_amount`. A single receipt tracks a group of deposits with the same unoccupied capacity in the current tx output. Multiple receipts for a specific unoccupied capacity may be created where each one keeps track of a different group of deposits.
+- The first `4 bytes` store the quantity of deposits with the same unoccupied capacity being tracked in the tx output. A tx may create many deposits with the same unoccupied capacity. This counter keeps track of how many deposits with the same unoccupied capacity are being tracked in the current tx by this specific receipt.
 
 Summing up, in the first deposit phase, these rules must be followed:
 
 - A **deposit** is defined as Nervos DAO deposit with an iCKB Logic Lock `{CodeHash: iCKB Logic Hash, HashType: Data1, Args: Empty}`.
-- A single deposit unoccupied capacity cannot be lower than `1000 CKB` nor higher than `1M CKB`.
-- A group of same size deposits must be accounted by a receipt.
+- A single deposit unoccupied capacity cannot be lower than `1,000 CKB` nor higher than `1,000,000 CKB`.
+- A group of same-size deposits must be accounted by a receipt.
 - A **receipt** is defined as a cell with iCKB Logic Type `{CodeHash: iCKB Logic Hash, HashType: Data1, Args: Empty}`, the first 12 bytes of cell data are reserved for:
   - `deposit_quantity` keeps track of the quantity of deposits (4 bytes)
   - `deposit_amount` keeps track of the single deposit unoccupied capacity (8 bytes)
-- No more than 64 output cells are allowed under the [currently deployed NervosDAO script](https://github.com/nervosnetwork/ckb-system-scripts/blob/814eb82c44f560dbdad2be97eb85464062920237/c/dao.c#L565-L591).
-- CellDeps must contain iCKB Dep Group comprising of: iCKB Logic Script and Nervos DAO Script.
+- No more than 64 output cells are allowed under the [currently deployed Nervos DAO script](https://github.com/nervosnetwork/ckb-system-scripts/blob/814eb82c44f560dbdad2be97eb85464062920237/c/dao.c#L565-L591).
+- CellDeps must contain iCKB Dep Group comprising: iCKB Logic Script and Nervos DAO Script.
 
 **Receipt data molecule encoding:**
 
@@ -256,11 +254,11 @@ Outputs:
 
 ### Deposit Phase 2
 
-A receipt accrues interests and it can be used to withdraw, but it's not liquid nor transferrable.
+A receipt accrues interest and it can be used to withdraw, but it's not liquid nor transferable.
 
-The second phase of the deposit transforms a receipt into its equivalent amount of iCKB tokens, which in turn is both liquid and transferrable. This conversion is now possible thanks to the header of the deposit block now available.
+The second phase of the deposit transforms a receipt into its equivalent amount of iCKB tokens, which in turn is both liquid and transferable. This conversion is now possible because the deposit block header is available.
 
-As seen in [iCKB/CKB Exchange Rate Calculation](#ickbckb-exchange-rate-calculation) for each receipt the equivalent amount of iCKB is well defined. The only difference being the incentivization: oversized receipts are subject to a 10% fee on the amount exceeding a standard deposit.
+As seen in [iCKB/CKB Exchange Rate Calculation](#ickbckb-exchange-rate-calculation), for each receipt the equivalent amount of iCKB is well defined. The only difference is the incentive mechanism: oversized receipts are subject to a 10% fee on the amount exceeding a standard deposit.
 
 In the second deposit phase, these rules must be followed:
 
@@ -281,9 +279,9 @@ receipt_iCKB_value(deposit_quantity, deposit_amount, AR_m) {
 ```
 
 - The total iCKB value of input tokens and input receipts must be equal to the total iCKB value of output tokens.
-- iCKB xUDT flags are set to `0x80000000` to enable [xUDT owner mode by input type](https://github.com/nervosnetwork/rfcs/blob/master/rfcs/0052-extensible-udt/0052-extensible-udt.md#owner-mode-update). This flag must later on be encoded as a `Uint32` Little Endian, so it's final encoding is `0x00000080`.
+- iCKB xUDT flags are set to `0x80000000` to enable [xUDT owner mode by input type](https://github.com/nervosnetwork/rfcs/blob/master/rfcs/0052-extensible-udt/0052-extensible-udt.md#owner-mode-update). This flag must later on be encoded as a `Uint32` Little Endian, so its final encoding is `0x00000080`.
 - HeaderDeps must include the hash of the header of the on-chain block containing the receipt tx for each receipt being converted into iCKB xUDT.
-- CellDeps must contain iCKB Dep Group comprising of: iCKB Logic Script, Standard xUDT Script and Nervos DAO Script.
+- CellDeps must contain iCKB Dep Group comprising: iCKB Logic Script, Standard xUDT Script and Nervos DAO Script.
 
 **Example of deposit phase 2:**
 
@@ -309,29 +307,29 @@ Outputs:
         Type:
             CodeHash: Standard xUDT Script
             HashType: Data1
-            Args: [iCKB Logic Script Hash, 0x80000000]
+            Args: [iCKB Logic Script Hash, 0x00000080]
         Lock: A lock that identifies the user
 ```
 
 ### Withdrawal
 
-In NervosDAO time is slotted in batches of 180 epochs depending on the initial deposit timing, a withdrawal is split in two steps:
+In Nervos DAO, time is slotted in batches of 180 epochs depending on the initial deposit timing, and withdrawal is split into two steps:
 
 1. In the first transaction the user requests the withdrawal.
-2. In the second transaction the user withdraws the deposit plus interests. Must be after the end of the 180 epoch batch in which the first transaction happened.
+2. In the second transaction the user withdraws the deposit plus interest. This must be after the end of the 180-epoch batch in which the first transaction happened.
 
-As seen in [NervosDAO RFC Calculation section](https://github.com/nervosnetwork/rfcs/blob/master/rfcs/0023-dao-deposit-withdraw/0023-dao-deposit-withdraw.md#calculation) the actual withdrawn CKB amount depends on the deposit block and on the withdrawal request block.
+As seen in [Nervos DAO RFC Calculation section](https://github.com/nervosnetwork/rfcs/blob/master/rfcs/0023-dao-deposit-withdraw/0023-dao-deposit-withdraw.md#calculation) the actual withdrawn CKB amount depends on the deposit block and on the withdrawal request block.
 
-The proposed protocol instead proceed by un-wrapping iCKB tokens into NervosDAO withdrawal cells:
+The proposed protocol instead proceeds by unwrapping iCKB tokens into Nervos DAO withdrawal cells:
 
 1. In the first transaction the user:
     - Requests the withdrawal from some protocol controlled deposits.
     - For that quantity, burns the exact corresponding amount of iCKB tokens and/or receipts.
 2. The second transaction is a Nervos DAO second withdrawal step.
 
-As seen in [iCKB/CKB Exchange Rate Calculation](#ickbckb-exchange-rate-calculation) for each deposit and receipt the equivalent amount of iCKB is well defined. The only difference being the incentivization: requesting the withdrawal from an oversized deposit is incentivized by a 10% discount on the amount exceeding a standard deposit.
+As seen in [iCKB/CKB Exchange Rate Calculation](#ickbckb-exchange-rate-calculation), for each deposit and receipt the equivalent amount of iCKB is well defined. The only difference is the incentive mechanism: requesting the withdrawal from an oversized deposit is incentivized by a 10% discount on the amount exceeding a standard deposit.
 
-An additional current CKB constraint is that NervosDAO deposit cells and phase 1 withdrawal cells must use lock scripts of the same serialized size. This is enforced at the node level by the [`DaoScriptSizeVerifier`](https://github.com/nervosnetwork/ckb/blob/6730f8023810d0888aa80c6a0d54cc2af918097d/verification/src/transaction_verifier.rs#L811-L885), which was added as a temporary mitigation for the NervosDAO occupied-capacity vulnerability. The public [Meepo hardfork note](https://blog.cryptape.com/ckb-vm-changes-under-the-meepo-hardfork#heading-fix-nervos-dao-occupied-capacity-vulnerability) describes the same fix and credits [phroi](https://github.com/phroi) with identifying and reporting the issue. Since iCKB deposits use the empty-args `iCKB Logic` lock, this leaves little room to encode user-specific ownership directly in the withdrawal request lock. For this reason, when a dedicated owner/owned pairing is useful, [Owned Owner Script](#owned-owner-script) can wrap a DAO withdrawal request together with a user-owned controller cell.
+An additional current CKB constraint is that Nervos DAO deposit cells and phase 1 withdrawal cells must use lock scripts of the same serialized size. This is enforced at the node level by the [`DaoScriptSizeVerifier`](https://github.com/nervosnetwork/ckb/blob/6730f8023810d0888aa80c6a0d54cc2af918097d/verification/src/transaction_verifier.rs#L811-L885), which was added as a temporary mitigation for the Nervos DAO occupied-capacity vulnerability. The public [Meepo hardfork note](https://blog.cryptape.com/ckb-vm-changes-under-the-meepo-hardfork#heading-fix-nervos-dao-occupied-capacity-vulnerability) describes the same fix and credits [phroi](https://github.com/phroi) with identifying and reporting the issue. Since iCKB deposits use the empty-args `iCKB Logic` lock, this leaves little room to encode user-specific ownership directly in the withdrawal request lock. For this reason, when a dedicated owner/owned pairing is useful, [Owned Owner Script](#owned-owner-script) can wrap a DAO withdrawal request together with a user-owned controller cell.
 
 Summing up, when withdrawing, these rules must be followed:
 
@@ -355,11 +353,11 @@ deposit_iCKB_value(capacity, occupied_capacity, AR_m) {
 }
 ```
 
-- The total iCKB value of input tokens and input receipts must be equal to the total iCKB value of output tokens and input deposits, the deposits being withdrawn.
+- The total iCKB value of input tokens and input receipts must be equal to the total iCKB value of output tokens and input deposits being withdrawn.
 - The Withdrawal Request lock must have the same serialized size as the consumed deposit lock under the current CKB node-level DAO rule.
-- No more than 64 output cells are allowed under the [currently deployed NervosDAO script](https://github.com/nervosnetwork/ckb-system-scripts/blob/814eb82c44f560dbdad2be97eb85464062920237/c/dao.c#L565-L591).
+- No more than 64 output cells are allowed under the [currently deployed Nervos DAO script](https://github.com/nervosnetwork/ckb-system-scripts/blob/814eb82c44f560dbdad2be97eb85464062920237/c/dao.c#L565-L591).
 - HeaderDeps must include the hash of the header of the on-chain block containing the deposits for each deposit being used to withdraw and each receipt being directly cashed out.
-- CellDeps must contain iCKB Dep Group comprising of: iCKB Logic Script, Standard xUDT Script and Nervos DAO Script.
+- CellDeps must contain iCKB Dep Group comprising: iCKB Logic Script, Standard xUDT Script and Nervos DAO Script.
 
 **Example of withdrawal phase 1:**
 
@@ -383,12 +381,12 @@ Inputs:
         Type:
             CodeHash: Standard xUDT Script
             HashType: Data1
-            Args: [iCKB Logic Script Hash, 0x80000000]
+            Args: [iCKB Logic Script Hash, 0x00000080]
         Lock: A lock that identifies the user
     - ...
 Outputs:
     - Nervos DAO phase 1 withdrawal cell:
-        Data: Deposit cell's including block number
+        Data: Deposit cell's inclusion block number
         Type: Nervos DAO
         Lock: A user lock with the same serialized size as the deposit lock
     - ...
@@ -398,7 +396,7 @@ Outputs:
 
 It's possible to include multiple actions from different phases in one transaction.
 
-One transaction can mix and include many actions from different iCKB phases. For example, a single transaction can consist of all the following actions:
+One transaction can include many actions from different iCKB phases. For example, a single transaction can consist of all the following actions:
 
 1. Create some new iCKB Deposits and their Receipt.
 2. Transform another Receipt into the xUDT iCKB token.
@@ -406,25 +404,25 @@ One transaction can mix and include many actions from different iCKB phases. For
 
 ## Ancillary Scripts
 
-The iCKB protocol without additional scripts would be difficult to use, this section describes the L1 scripts that have been developed to address iCKB user needs.
+The iCKB protocol would be difficult to use without additional scripts. This section describes the L1 scripts that have been developed to address iCKB user needs.
 
 These scripts offer solutions to specific lock needs, while supporting all user locks. The current iCKB deployment assumes whole-transaction-binding user locks, but delegated-signature and `OTX`-style integrations need extra care. For example, let's assume that:
 
-- The user lock is OTX signature based.
-- The user unlocks some cells with signature in an OTX transaction, first OTX.
+- The user lock is OTX-signature-based.
+- The user unlocks some cells with a signature in the first OTX transaction.
 
 An attacker could do the following:
 
-- Attacker includes all other cells locked with delegated user signature in a second OTX.
-- Attacker packs this second OTX together with the first OTX in the same transaction.
-- These second cells will unlock thanks to delegated signature validation.
-- Attacker gains control of this second group of cells.
+- The attacker includes all other cells locked with the delegated user signature in a second OTX.
+- The attacker packs this second OTX together with the first OTX in the same transaction.
+- These second cells unlock through delegated signature validation.
+- The attacker gains control of this second group of cells.
 
 This is the reason why these scripts are instead designed around a similar but safer pattern:
 
-- A single transaction mint both a controlled cell and controller cell.
-- In a transaction there may be multiple controlled cell and controller cell.
-- At minting time one of the cells reference the other one using the signed relative index distance between each other.
+- A single transaction mints both a controlled cell and a controller cell.
+- In a transaction, there may be multiple controlled cells and controller cells.
+- At minting time, one of the cells references the other using the signed relative index distance between them.
 - The controlled cell satisfies specific user needs.
 - The controlled cell uses the new script as lock
 - The controlled cell may have an updating method using the new script logic.
@@ -435,7 +433,7 @@ This is the reason why these scripts are instead designed around a similar but s
 
 ### Owned Owner Script
 
-While the iCKB Logic Script is independent of the withdrawal request lock choice, a dedicated owner/owned pairing can still be useful. For this reason, the Owned Owner Script was developed. This script pairs DAO withdrawal requests, including but not limited to iCKB-origin withdrawals, with owner cells. In a transaction there may be multiple owned cells and owner cells. This script lifecycle consists of two transactions: Mint and Melt.
+While the iCKB Logic Script is independent of the withdrawal request lock choice, a dedicated owner/owned pairing can still be useful. For this reason, the Owned Owner Script was developed. This script pairs DAO withdrawal requests, including but not limited to iCKB-origin withdrawals, with owner cells. In a transaction there may be multiple owned cells and owner cells. This script's lifecycle consists of two transactions: Mint and Melt.
 
 **Owner data molecule encoding:**
 
@@ -452,7 +450,7 @@ struct OwnedOwnerData {
 In the Mint transaction, the output contains:
 
 1. The owned cell with this script as lock.
-2. The owner cell with this script as type and a lock that identifies the user. This cell memorizes in data the signed relative index distance between the owned cell and itself as a signed 32 bit integer encoded in little-endian.
+2. The owner cell with this script as type and a lock that identifies the user. This cell stores in its data the signed relative index distance between the owned cell and itself as a signed 32-bit integer encoded in little-endian.
 
 Validation rule: `owned_index == owner_index + owned_distance`
 
@@ -461,7 +459,6 @@ Validation rule: `owned_index == owner_index + owned_distance`
 ```yaml
 CellDeps:
     - iCKB Dep Group cell
-    - Owned Owner data cell
     - ...
 HeaderDeps: 
     - Deposit Block Header Hash
@@ -479,12 +476,12 @@ Inputs:
         Type:
             CodeHash: Standard xUDT Script
             HashType: Data1
-            Args: [iCKB Logic Script Hash, 0x80000000]
+            Args: [iCKB Logic Script Hash, 0x00000080]
         Lock: A lock that identifies the user
     - ...
 Outputs:
     - Nervos DAO phase 1 withdrawal cell:
-        Data: Deposit cell's including block number
+        Data: Deposit cell's inclusion block number
         Type: Nervos DAO
         Lock: Owned role
             CodeHash: Owned Owner Hash
@@ -502,21 +499,20 @@ Outputs:
 
 #### Melt Owned Owner
 
-In the Melt transaction, the input contains both the owned cell and the owner cell. If one of the two is missing the script does't validate.
+In the Melt transaction, the input contains both the owned cell and the owner cell. If one of the two is missing, the script fails validation.
 
 **Example of withdrawal phase 2 using Owned Owner:**
 
 ```yaml
 CellDeps:
     - iCKB Dep Group cell
-    - Owned Owner data cell
     - ...
 HeaderDeps: 
     - Deposit Block Header Hash
     - ...
 Inputs:
     - Nervos DAO phase 1 withdrawal cell:
-        Data: Deposit cell's including block number
+        Data: Deposit cell's inclusion block number
         Type: Nervos DAO
         Lock: Owned role
             CodeHash: Owned Owner Hash
@@ -538,13 +534,18 @@ Outputs:
 
 Interacting directly with the iCKB protocol has some limitations:
 
-- In transactions containing NervosDAO script, no more than 64 output cells are allowed under the [currently deployed NervosDAO script](https://github.com/nervosnetwork/ckb-system-scripts/blob/814eb82c44f560dbdad2be97eb85464062920237/c/dao.c#L565-L591).
+- In transactions containing Nervos DAO script, no more than 64 output cells are allowed under the [currently deployed Nervos DAO script](https://github.com/nervosnetwork/ckb-system-scripts/blob/814eb82c44f560dbdad2be97eb85464062920237/c/dao.c#L565-L591).
 - iCKB Logic discourages deposits bigger or smaller than the standard deposit size.
 - There may be a mismatch between the amount the user wants to withdraw and the deposits available in the iCKB pool.
-- NervosDAO doesn't allow to partially withdraw from a deposit.
+- Nervos DAO doesn't allow to partially withdraw from a deposit.
 - There is no easy way to merge multiple user intentions within a single deposit or withdrawal.
 
-To abstract over NervosDAO and iCKB protocol limitations, it has been created a lock that implements limit order logic, abstracting user intentions, and that anyone can match partially or completely, similarly to an ACP lock. This lock aims to be compatible with all types that follows the sUDT convention of storing the amount in the first 16 bytes of cell data and store no data in the witness, at the moment sUDT and partially xUDT. If a UDT needs to store data on Witness, then it should not be used in conjunction with the limit order script. In a transaction there may be multiple orders cells. This script lifecycle consists of three kind of transactions: Mint, Match and Melt.
+To abstract over Nervos DAO and iCKB protocol limitations, the Limit Order Script implements limit order logic, abstracts user intentions, and can be matched partially or completely by anyone, similarly to an ACP lock. This lock aims to be compatible with all types that follow the sUDT convention:
+
+- Store the amount in the first 16 bytes of cell data.
+- Store no data in the witness.
+
+Currently, this includes sUDT and xUDT without extension data. If a UDT needs to store data in the witness, then it should not be used in conjunction with the limit order script. In a transaction, there may be multiple order cells. This script's lifecycle consists of three kinds of transactions: Mint, Match and Melt.
 
 **Limit Order data molecule encoding:**
 
@@ -593,7 +594,7 @@ union OrderData {
 
 In Mint transactions, the output contains:
 
-1. The limit order cell itself with an UDT as type and this script as lock. In the cell data field, this lock memorizes following information:
+1. The limit order cell itself with a UDT as type and this script as lock. In the cell data field, this lock stores the following information:
     - `padding` is used to achieve the same `OrderData` length for both variants.
     - `master_distance` expresses the signed relative index distance between this cell and the master cell.
     - `ckb_to_udt` expresses the order exchange ratio from CKB to UDT.
@@ -606,14 +607,14 @@ Validation rules:
 
 - Only the `MintOrderData` variant of `OrderData` is allowed for a newly minted order.
 - Minted order output `index` plus `MintOrderData.master_distance` must be equal to its master cell output `index`.
-- `ckb_min_match_log` only valid values are from 0 to 64, extremes included.
+- `ckb_min_match_log` valid values are from 0 to 64, inclusive.
 - Additional cell data is not allowed in order cells.
 
 **Example of Limit Order mint:**
 
 ```yaml
 CellDeps:
-    - Limit Order data cell
+    - iCKB Dep Group cell
     - ...
 Inputs:
     - ...
@@ -638,17 +639,17 @@ Outputs:
 
 #### Match Limit Order
 
-In Match transactions the allowed input limit `OrderData` variants are `MintOrderData` and `MatchOrderData`. While the only allowed output variant is `MatchOrderData`.
+In Match transactions, the allowed input limit order `OrderData` variants are `MintOrderData` and `MatchOrderData`. The only allowed output variant is `MatchOrderData`.
 
-The only difference between `MintOrderData` and `MatchOrderData` is that `padding` and `master_distance` are discarded in favour of `master_outpoint`, which keeps track of original master outpoint of the matched order.
+The only difference between `MintOrderData` and `MatchOrderData` is that `padding` and `master_distance` are discarded in favour of `master_outpoint`, which keeps track of the original master outpoint of the matched order.
 
 Validation rules:
 
 - `in_ckb * ckb_multiplier + in_udt * udt_multiplier <= out_ckb * ckb_multiplier + out_udt * udt_multiplier`
 - `in_wanted_asset + 2^log_min_match <= out_wanted_asset`
 - An order already completely fulfilled cannot be matched.
-- Only `MatchOrderData` variant of `OrderData` is allowed as the matched order in output.
-- Implicit Master outpoint must be equal between input and its matched output order:
+- Only the `MatchOrderData` variant of `OrderData` is allowed as the matched order output.
+- The implicit Master outpoint must be equal between the input and its matched output order:
     1. If input `OrderData` is the variant `MintOrderData`, then input order `outpoint.tx_hash` must be equal to its matched output order `master_outpoint.tx_hash`. Additionally, input order `outpoint.index + master_distance` must be equal to its matched output order `master_outpoint.index`.
     2. If input `OrderData` is the variant `MatchOrderData`, then `master_outpoint` must be equal between input and its matched output order.
 - `ckb_to_udt`, `udt_to_ckb` and `ckb_min_match_log` must be equal between input and its matched output order.
@@ -658,7 +659,7 @@ Validation rules:
 
 ```yaml
 CellDeps:
-    - Limit Order data cell
+    - iCKB Dep Group cell
     - ...
 Inputs:
     - Limit Order cell:
@@ -684,19 +685,19 @@ Outputs:
 
 #### Melt Limit Order
 
-In the Melt transaction, the input contains both the order cell and its master cell. If one of the two is missing the script does't validate. Any limit `OrderData` variant is allowed as input.
+In the Melt transaction, the input contains both the order cell and its master cell. If one of the two is missing, the script fails validation. Any limit `OrderData` variant is allowed as input.
 
 Validation rules:
 
-- Implicit Master outpoint must be equal between input order cell and its input master cell:
-    1. If order's `OrderData` is the variant `MintOrderData`, then order `outpoint.tx_hash` must be equal to its input master `outpoint.tx_hash`. Additionally, order `outpoint.index + master_distance` must be equal to its master `outpoint.index`.
-    2. If order's `OrderData` is the variant `MatchOrderData`, then order `master_outpoint` must be equal to its master `outpoint`.
+- The implicit Master outpoint must be equal between the input order cell and its input master cell:
+    1. If the order's `OrderData` is the variant `MintOrderData`, then the order's `outpoint.tx_hash` must be equal to its input master's `outpoint.tx_hash`. Additionally, the order's `outpoint.index + master_distance` must be equal to its master's `outpoint.index`.
+    2. If the order's `OrderData` is the variant `MatchOrderData`, then the order's `master_outpoint` must be equal to its master's `outpoint`.
 
 **Example of Limit Order melt:**
 
 ```yaml
 CellDeps:
-    - Limit Order data cell
+    - iCKB Dep Group cell
     - ...
 Inputs:
     - Limit Order cell:
@@ -723,57 +724,88 @@ Outputs:
 
 It's possible to include multiple actions from different phases in one transaction.
 
-One transaction can mix and include many actions from different Limit Order phases. For example, a single transaction can consist of all the following actions:
+One transaction can include many actions from different Limit Order phases. For example, a single transaction can consist of all the following actions:
 
 1. Mint many new Limit Orders.
 2. Match many existing Limit Orders.
 3. Melt many old Limit Orders.
 
+## Exit Under Low Liquidity
+
+The deposit, withdrawal, and limit-order mechanisms above compose into an exit flow for low-liquidity cases. A user should first withdraw the best available combination of whole deposits, then only consider a lossy action for the remaining iCKB:
+
+- **Whole-deposit withdrawal**: withdraw the available deposit combination with the greatest total iCKB value that does not exceed the user's balance. In other words, choose deposits where `sum(deposit_iCKB_value) <= iCKB_balance` and maximize `sum(deposit_iCKB_value)`.
+- **Limit-order fallback**: if no whole-deposit combination exactly matches the user's balance, offer the remaining iCKB as a limit order from iCKB to CKB. That order lets another participant satisfy the mismatch without creating a non-standard deposit.
+- **Receipt top-up**: if the order remains unmatched and the minimum and maximum deposit sizes permit it, a user or matcher creates one or more non-standard deposits. After the deposit block header is available, those receipts have exact iCKB values. A withdrawal can then consume the remaining iCKB and receipts together to request withdrawal from an available deposit.
+
+For example, assume only standard `100,000 iCKB` deposits are available and a user holds `170,000 iCKB`:
+
+1. The user withdraws one `100,000 iCKB` deposit first, leaving `70,000 iCKB`.
+2. The user leaves the `70,000 iCKB` remainder as a limit order from iCKB to CKB.
+3. If no matcher takes that order, the user creates a non-standard deposit intended to produce a receipt worth slightly more than `30,000 iCKB`.
+4. After inclusion, the user combines the remaining `70,000 iCKB` and `30,000 iCKB` from that receipt to request withdrawal from another `100,000 iCKB` deposit.
+
+The `30,000 iCKB` receipt share represents CKB already added to the pool by the new deposit. It balances the second `100,000 iCKB` withdrawal; the recovered value comes from the old `70,000 iCKB`. The unrecovered overhead is:
+
+- The `82 CKB` occupied by the new non-standard deposit cell.
+- Transaction fees.
+
+The user targets slightly above `30,000 iCKB`. Any excess iCKB output from that withdrawal/conversion flow can be burned in a separate xUDT-only cleanup to reclaim the token cell's occupied CKB capacity when converting it would cost more than the dust is worth.
+
+This path is a last resort. Small non-standard deposits lose proportionally more value to occupied capacity, and the receipt value cannot be known exactly before inclusion because it depends on the deposit block header.
+
 ## Audit
 
-This whitepaper and the [code of iCKB Scripts](https://github.com/ickb/v1-core/tree/master/scripts) has been both internally reviewed by individuals with deep experience in Nervos L1 and [externally audited by the Scalebit team](http://scalebit.xyz/reports/20240911-ICKB-Final-Audit-Report.pdf), an internationally recognized blockchain security team.
+This whitepaper and the [iCKB Scripts code](https://github.com/ickb/contracts/tree/master/scripts) have been internally reviewed by individuals with deep experience in Nervos L1 and externally audited by [the Scalebit team](http://scalebit.xyz/reports/20240911-ICKB-Final-Audit-Report.pdf), an internationally recognized blockchain security team.
+
+A later local executable review of the deployed release binaries was completed on 2026-05-01 and is available in the iCKB contracts repository as [`20260501-ICKB-Audit-Report.md`](https://github.com/ickb/contracts/blob/master/20260501-ICKB-Audit-Report.md). That review covers `iCKB Logic`, `Owned Owner`, `Limit Order`, and the shared `utils` crate.
 
 ## Unsigned Lock Witnesses Malleability
 
-All the script presented in this whitepaper (iCKB Script, Owned Owner Script and Limit Order Script) follow a novel pattern of using a script both as lock in one cell and type into another cell. While the pattern allows great flexibility, it also comes with an implicit weakness: the cell that uses the script as lock doesn't rely on signature-based verification, so the witnesses in the same group (lock, input type and output type) can be modified by an attacker after user signature. [Credits to @XuJiandong for the discovery](https://github.com/ickb/whitepaper/issues/22).
+All the scripts presented in this whitepaper (iCKB Logic Script, Owned Owner Script and Limit Order Script) follow a novel pattern of using a script both as a lock in one cell and as a type in another cell. While the pattern allows great flexibility, it also comes with an implicit weakness: the cell that uses the script as lock doesn't rely on signature-based verification, so the witnesses in the same group (lock, input type and output type) can be modified by an attacker after the user signs. [Credits to @XuJiandong for the discovery](https://github.com/ickb/whitepaper/issues/22).
 
-**Rule of thumb**: if a script in a transaction needs to store data in the witness and this data can be tampered without the transaction becoming invalid, then this transaction must not employ the scripts presented in the current whitepaper.
+**Rule of thumb**: if a script in a transaction needs to store data in the witness and this data can be tampered with without making the transaction invalid, then this transaction must not employ the scripts presented in the current whitepaper.
 
-This witnesses malleability doesn't affect the current iCKB use-cases as no data that can be freely tampered is ever stored into witnesses.
+This witness malleability does not affect the current iCKB use cases, because no freely tamperable data is ever stored in witnesses.
 
 ## Confusion Attack on Limit Order
 
-Due to the architectural design of Nervos L1, output locks are not executed during the transaction validation process. Consequently, an attacker may create a limit order that shares the same master cell as an already existing limit order. This situation may lead to confusion to the front-end code regarding the identification of the correct limit order. Users must exercise particular caution when melting their limit order and master cell, as selecting the incorrect limit order could result in the permanent locking of the funds associated with their original limit order. More details in the [dedicated GitHub issue](https://github.com/ickb/whitepaper/issues/19).
+Due to the architectural design of Nervos L1, output locks are not executed during the transaction validation process. Consequently, an attacker may create a limit order that shares the same master cell as an already existing limit order. This situation may confuse front-end code when identifying the correct limit order. Users must exercise particular caution when melting their limit order and master cell, as selecting the incorrect limit order could result in the permanent locking of the funds associated with their original limit order. More details in the [dedicated GitHub issue](https://github.com/ickb/whitepaper/issues/19).
 
-The most practical solution is to fetch the original Mint tx of the Limit Order (LO). With the Mint tx, it's possible to validate (on the front-end) that all the LO parameters are the same between the current LO and the initial Mint LO, but in case there are still multiple LO for the same Master Cell, there must be an additional heuristic.
+The most practical solution is to fetch the original Mint tx of the Limit Order (LO). With the Mint tx, it's possible to validate (on the front-end) that all the LO parameters are the same between the current LO and the initial Mint LO, but if there are still multiple LOs for the same Master Cell, an additional heuristic is required.
 
 ### Directional LO Heuristic
 
-Directional LO do not increase in value, usually they are constant in value thru their life-cycle. They only increase in value when whoever matches them make mistakes. Normally once a certain progress it's reached (eg LO has been 50% matched), it is not reversible.
+Directional LOs do not increase in value; usually, they remain constant throughout their life cycle. They only increase in value when whoever matches them makes a mistake. Normally, once certain progress is reached (for example, the LO has been 50% matched), it is not reversible.
 
 **Qualifications for Directional LO**:
 
-- LO has same parameters as Mint LO
+- LO has the same parameters as Mint LO
 - LO has at least the same value as Mint LO
 
-**Heuristic**: say there are multiple LO with same Master cell, the LO with the **best progress** is chosen.
+**Heuristic**: if there are multiple LOs with the same Master cell, choose the LO with the **best progress**.
 
-**Counter intuitive property**: LO 100% matched (with value equal to Mint) is preferred over 0% LO matched (with possibly bigger value, but very likely forged by an attacker)
+**Counterintuitive property**: a 100% matched LO (with value equal to Mint) is preferred over a 0% matched LO (with possibly greater value, but very likely forged by an attacker).
 
 ### Dual-Sided LO Heuristic
 
-Dual-Sided LO (those with two ratios) can increase in value. They increase in value when whoever matches them go back and forth between the two assets. So there is no concept of progress here. Any distribution of assets in the LO is not final and can be altered at any time.
+Dual-Sided LOs (those with two ratios) can increase in value. They increase in value when whoever matches them goes back and forth between the two assets. So there is no concept of progress here. Any distribution of assets in the LO is not final and can be altered at any time.
 
 **Qualifications for Dual-Sided LO**:
 
-- LO has same parameters as Mint LO
+- LO has the same parameters as Mint LO
 - LO has at least the same value as Mint LO
 
-**Heuristic**: say there are multiple LO with same Master cell, the LO with the **best value** is chosen.
+**Heuristic**: if there are multiple LOs with the same Master cell, choose the LO with the **best value**.
 
 ### Implementation
 
-An implementation of this patch can be found in [iCKB/V1-Core](https://github.com/ickb/v1-core/commit/1d90b1fb37d5a2a359372300c9e4c9a9b29b4459).
+The current stack-side mitigation lives in pinned `@ickb/order` code:
+
+- [`OrderManager.findOrders(...)`](https://github.com/ickb/stack/blob/43ee8d8a57009f3dd731eb1045d29688de2a84f8/packages/order/src/order.ts#L574-L630) groups live orders with masters.
+- [`resolveOrderGroup(...)`](https://github.com/ickb/stack/blob/43ee8d8a57009f3dd731eb1045d29688de2a84f8/packages/order/src/order.ts#L735-L760) loads the origin and builds the final `OrderGroup`.
+- [`findOrigin(...)`](https://github.com/ickb/stack/blob/43ee8d8a57009f3dd731eb1045d29688de2a84f8/packages/order/src/order.ts#L763-L809) recovers the mint-origin order from the master cell's transaction.
+- [`OrderCell.resolve(...)`](https://github.com/ickb/stack/blob/43ee8d8a57009f3dd731eb1045d29688de2a84f8/packages/order/src/cells.ts#L235-L279) validates and ranks descendant orders.
 
 The current stack keeps the same front-end strategy in `@ickb/order`, but makes the selection rule explicit in one resolver.
 
@@ -802,14 +834,14 @@ From the start iCKB has been built in the open as a public good. As such iCKB sc
 
 As a separate deployment detail, the published binary cells themselves are locked with a `secp256k1_blake160` zero lock, an unspendable lock. This does not make the live script references upgradable, because under `data1` the protocol points to the deployed bytes directly; it only means no trusted operator key remains embedded as an owner of the binary cells.
 
-Additionally, it has been created the following dependency group:
+Additionally, the protocol uses the following dependency group:
 
 - iCKB Logic
 - Limit Order
 - Owned-Owner
 - xUDT
 - Secp256k1 Blake160
-- NervosDAO
+- Nervos DAO
 - Secp256k1 Data
 - Secp256k1 Blake160 Multisig
 
@@ -915,16 +947,16 @@ At the inception of iCKB, the following were the intended possible use cases:
 
 - CKB-based Initial Stake Pool Offerings.
 - The official Nervos DAO community voting mechanism.
-- Godwoken switch from pCKB to iCKB, protecting users from CKB issuance.
-- A multitude more L1 & L2 applications!
+- iCKB as a value-accruing asset for Nervos L2 and bridge applications.
+- A multitude more L1, L2, and bridge applications!
 
-A few things changed since the inception, these are the updated use cases:
+A few things have changed since inception. These are the updated use cases:
 
-- ISPO is a well thought model, but currently Nervos has already a Community Fund. So the need has already been addressed. Developing an ISPO now may provide different paths & rules for accessing funding.
-- Switching from pCKB to iCKB would give free interests to any CKB holder on Godwoken, then again feels like Godwoken never really found its use case.
-- In the short term the most impactful iCKB result will be that more users will feel comfortable in stacking into NervosDAO by using iCKB. So more and more CKB will be locked into NervosDAO, which is an achievement in itself.
-- In the medium term more and more decentralized finance protocols will integrate iCKB. So users will be able to enjoy the interests payed out by both these protocols and NervosDAO.
-- In the long term more and more UTXO chains will be integrated with Nervos thanks to [RGB++, iCKB is in the ideal position of taking advantage of this](https://github.com/ckb-cell/RGBPlusPlus-design/blob/main/docs/light-paper-en.md#coins). Users from other chains will be able to enjoy the interests payed out by NervosDAO, while being liquid. Also other chains protocols will be able to build on top of iCKB. So users will be able to enjoy the interests payed out by both these other chains protocols and NervosDAO.
+- ISPO is a well-thought-out model, but Nervos currently already has a Community Fund, so the need has been addressed. Developing an ISPO now may provide different paths & rules for accessing funding.
+- iCKB can remain useful in Nervos L2 and bridge contexts because it keeps its value and continues accruing Nervos DAO interest while staying liquid.
+- In the short term the most impactful iCKB result will be that more users will feel comfortable staking into Nervos DAO by using iCKB. More CKB will be locked into Nervos DAO, which is an achievement in itself.
+- In the medium term more decentralized finance protocols will integrate iCKB. So users will be able to receive the interest paid out by both these protocols and Nervos DAO.
+- In the long term, more UTXO chains will be integrated with Nervos thanks to [RGB++, and iCKB is ideally positioned to take advantage of this](https://github.com/ckb-cell/RGBPlusPlus-design/blob/main/docs/light-paper-en.md#coins). Users from other chains will be able to receive the interest paid out by Nervos DAO while remaining liquid. Protocols from other chains will also be able to build on top of iCKB, so users will be able to receive the interest paid out by both those protocols and Nervos DAO.
 
 ## Useful Resources
 
@@ -935,7 +967,7 @@ A few things changed since the inception, these are the updated use cases:
 - [Thread for iCKB development on Discord](https://discord.com/channels/657799690070523914/980237827122032730)
 - [iCKB AMA on Reddit](https://old.reddit.com/r/NervosNetwork/comments/1erw6v8/ickb_ama/)
 - [iCKB journey into CoBuild on Nervos Talk](https://talk.nervos.org/t/ickb-journey-into-cobuild/7918)
-- [iCKB Scripts code](https://github.com/ickb/v1-core/tree/master/scripts)
+- [iCKB Scripts code](https://github.com/ickb/contracts/tree/master/scripts)
 - [Scalebit Audit](https://scalebit.xyz/reports/20240911-ICKB-Final-Audit-Report.pdf)
 - [Initial proposal on Nervos Talk](https://talk.nervos.org/t/looking-for-feedback-ickb-a-tokenization-of-nervosdao-deposits/6772)
 - [Is wstCKB just another iCKB?](https://github.com/stablepp/media-kit/issues/1)
