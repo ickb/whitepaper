@@ -753,9 +753,9 @@ This path is a last resort: the user must provide the CKB for the new deposit up
 
 ## Audit
 
-This whitepaper and the [iCKB Scripts code](https://github.com/ickb/contracts/tree/master/scripts) have been internally reviewed by individuals with deep experience in Nervos L1 and externally audited by [the Scalebit team](http://scalebit.xyz/reports/20240911-ICKB-Final-Audit-Report.pdf), an internationally recognized blockchain security team.
+This whitepaper and the [iCKB Scripts code](https://github.com/ickb/contracts/tree/master/scripts) have been internally reviewed by individuals with deep experience in Nervos L1. The scripts have also been externally audited by [the Scalebit team](https://scalebit.xyz/reports/20240911-ICKB-Final-Audit-Report.pdf), an internationally recognized blockchain security team.
 
-A later local executable review of the deployed release binaries was completed on 2026-05-01 and is available in the iCKB contracts repository as [`20260501-ICKB-Audit-Report.md`](https://github.com/ickb/contracts/blob/master/20260501-ICKB-Audit-Report.md). That review covers `iCKB Logic`, `Owned Owner`, `Limit Order`, and the shared `utils` crate.
+A later executable review of the deployed release binaries, begun on 2026-05-01 and updated as the protocol's tests evolve, is available in the iCKB contracts repository as [`ICKB-Audit-Report.md`](https://github.com/ickb/contracts/blob/master/ICKB-Audit-Report.md). That review covers `iCKB Logic`, `Owned Owner`, `Limit Order`, and the shared `utils` crate.
 
 ## Unsigned Lock Witnesses Malleability
 
