@@ -162,7 +162,7 @@ Conversely, by plugging block `m` as deposit block and block `0` as withdrawal b
 
 - `100,000 CKB * 10 ^ 16 / AR_m` (excluding `82 CKB` of occupied cell capacity)
 
-This shows that the iCKB/CKB exchange rate only depends on a few constants and the accumulated rate, defined in the deposit's block header.
+This shows that the iCKB/CKB exchange rate only depends on a few constants and the accumulated rate, defined in the deposit's block header. The `82 CKB` of occupied capacity is never converted to iCKB: whoever withdraws the deposit receives it on top of the exchange rate.
 
 ### Deposit
 
@@ -742,17 +742,14 @@ For example, assume only standard `100,000 iCKB` deposits are available and a us
 
 1. The user withdraws one `100,000 iCKB` deposit first, leaving `70,000 iCKB`.
 2. The user leaves the `70,000 iCKB` remainder as a limit order from iCKB to CKB.
-3. If no matcher takes that order, the user creates a non-standard deposit intended to produce a receipt worth slightly more than `30,000 iCKB`.
+3. If no matcher takes that order, the user cancels it and creates a non-standard deposit intended to produce a receipt worth slightly more than `30,000 iCKB`.
 4. After inclusion, the user combines the remaining `70,000 iCKB` and `30,000 iCKB` from that receipt to request withdrawal from another `100,000 iCKB` deposit.
 
-The `30,000 iCKB` receipt share represents CKB already added to the pool by the new deposit. It balances the second `100,000 iCKB` withdrawal; the recovered value comes from the old `70,000 iCKB`. The unrecovered overhead is:
+The `30,000 iCKB` receipt share represents CKB the user has just added to the pool; the recovered value is the old `70,000 iCKB`. The new deposit's `82 CKB` of occupied capacity stays with that deposit for whoever withdraws it later, while the user receives the `82 CKB` of the standard deposit they withdraw, so the two cancel out.
 
-- The `82 CKB` occupied by the new non-standard deposit cell.
-- Transaction fees.
+The user targets slightly above `30,000 iCKB` because the receipt value depends on the deposit block header. Since withdrawals must balance exactly, the excess ends up in a small iCKB cell that can be burned in a separate xUDT-only transaction to reclaim its occupied capacity.
 
-The user targets slightly above `30,000 iCKB`. Any excess iCKB output from that withdrawal/conversion flow can be burned in a separate xUDT-only cleanup to reclaim the token cell's occupied CKB capacity when converting it would cost more than the dust is worth.
-
-This path is a last resort. Small non-standard deposits lose proportionally more value to occupied capacity, and the receipt value cannot be known exactly before inclusion because it depends on the deposit block header.
+This path is a last resort: the user must provide the CKB for the new deposit upfront and gets it back only when the second withdrawal completes, on top of extra transactions and fees.
 
 ## Audit
 
