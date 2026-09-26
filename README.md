@@ -16,32 +16,13 @@ The Nervos DAO is possibly the most important smart-contract of Nervos Layer 1 (
 
 ### Untapped Potential
 
-There exists untapped potential in the Nervos ecosystem for a protocol that can liquify Nervos DAO accrued interest and bridge it from L1 to L2. This protocol could enable CKB-based [Initial Stake Pool Offerings](https://www.meld.com/ispo) (ISPO), where users can lock CKB to support new early stage projects without losing their original CKB deposit.
+There exists untapped potential in the Nervos ecosystem for a protocol that can liquify Nervos DAO accrued interest and bridge it from L1 to L2. This protocol could enable CKB-based [Initial Stake Pool Offerings](https://web.archive.org/web/20241007164238/https://www.meld.com/ispo) (ISPO), where users can lock CKB to support new early stage projects without losing their original CKB deposit.
 
 The protocol could also be used to enable a community voting mechanism with funds locked in the Nervos DAO, as well as a multitude more L1, L2, and bridge applications!
 
 ### dCKB (Unmaintained)
 
-In the past there has been an effort to tackle this challenge by [NexisDAO with dCKB](https://docs.nexisdao.com/nexisdao/mint-dckb). Their approach is to tokenize the holder receipt, which in turn becomes tradeable, so the holder remains liquid. The issue with their approach is that only the original owner can unlock the deposit. Judging by their [GitHub repository's issues](https://github.com/NexisDao/NexisDao-core/issues), dCKB does not appear to be actively maintained.
-
-### wstCKB (Under Development)
-
-Currently there is a new effort to tackle this challenge by Stable++. They are developing a new solution behind closed doors and as such not much information is publicly available on wstCKB, [except for](https://www.reddit.com/r/NervosNetwork/comments/1etnlqv/stable_part_2/):
-
-> Stable++ also introduces Liquidity Staking through Nervos DAO. Users can stake CKB in exchange for wstCKB, allowing them to earn staking rewards while still being able to use their wstCKB for investments without losing liquidity.
-
-When asked directly on their public Telegram group, [Alive24 explained](https://t.me/Stablepp/881):
-
-> At the moment, as LST is still under development [...] If anything **disclosable**, we attempt to make wstCKB in a way similar to wstETH in terms of rebasing mechanism and anonymous Nervos DAO cell deposit and withdrawal. Any further details are still under development and adjustment. [...] I've read the proposal today and we found a lot in common! Thanks for the advice and definitely it would be of inspirations.
-
-From the information currently available, wstCKB seems to avoid dCKB's mistakes and closely follow iCKB's approach.
-
-This brings the question: [Is it really worth developing an iCKB look-alike and doubling the effort?](https://github.com/stablepp/media-kit/issues/1)
-
-If wstCKB is too similar to iCKB, the result would be split liquidity between iCKB and wstCKB, reducing the Deposit Pool size for both and bringing the following downsides for everyone:
-
-1. Longer withdrawal wait time because the temporal density of deposit maturities depends on Deposit Pool size.
-2. [Busiwork Attack feasibility](https://github.com/ickb/whitepaper/issues/8).
+In the past there has been an effort to tackle this challenge by [NexisDAO with dCKB](https://web.archive.org/web/20240419163049/https://docs.nexisdao.com/nexisdao/mint-dckb). Their approach is to tokenize the holder receipt, which in turn becomes tradeable, so the holder remains liquid. The issue with their approach is that only the original owner can unlock the deposit. Judging by their [GitHub repository's issues](https://github.com/NexisDao/NexisDao-core/issues), dCKB does not appear to be actively maintained.
 
 ## Solution
 
@@ -95,7 +76,7 @@ This protocol lives completely on Nervos Layer 1. It works by wrapping Nervos DA
 
 ### iCKB/CKB Exchange Rate Idea
 
-The iCKB mechanism for wrapping interest is similar to [Compound's cTokens](https://compound.finance/docs/ctokens). The CKB to iCKB exchange rate is determined by block number. At the genesis block `1 CKB` is equal to `1 iCKB`. As time passes `1 CKB` is slowly worth less than `1 iCKB` at a rate that matches the issuance from the Nervos DAO. This is because iCKB is gaining value. An easier way to understand this is to think of:
+The iCKB mechanism for wrapping interest is similar to [Compound's cTokens](https://docs.compound.xyz/v2/ctokens/). The CKB to iCKB exchange rate is determined by block number. At the genesis block `1 CKB` is equal to `1 iCKB`. As time passes `1 CKB` is slowly worth less than `1 iCKB` at a rate that matches the issuance from the Nervos DAO. This is because iCKB is gaining value. An easier way to understand this is to think of:
 
 - CKB as inflationary
 - iCKB as non-inflationary
@@ -170,7 +151,7 @@ In Nervos DAO, a deposit is a single transaction in which a CKB holder locks the
 
 In the proposed protocol, a deposit is the process in which a CKB holder locks their CKB in exchange for iCKB tokens.
 
-This process can't happen in a single transaction due to a Nervos L1 technical choice: as seen from the [previous section](#ickbckb-exchange-rate-calculation), to mint the iCKB equivalent for a deposit the protocol needs to access the current [`accumulated rate`](https://github.com/nervosnetwork/rfcs/blob/master/rfcs/0023-dao-deposit-withdraw/0023-dao-deposit-withdraw.md#calculation), which is defined in the deposit's block header. However, Nervos L1 is [off-chain deterministic](https://justjjy.com/Offchain-determinism), so [the current block header cannot be accessed while validating a transaction](https://github.com/nervosnetwork/ckb/blob/f93b498379173353b5804818b33227cc302ffd6a/script/src/syscalls/load_header.rs#L72).
+This process can't happen in a single transaction due to a Nervos L1 technical choice: as seen from the [previous section](#ickbckb-exchange-rate-calculation), to mint the iCKB equivalent for a deposit the protocol needs to access the current [`accumulated rate`](https://github.com/nervosnetwork/rfcs/blob/master/rfcs/0023-dao-deposit-withdraw/0023-dao-deposit-withdraw.md#calculation), which is defined in the deposit's block header. However, Nervos L1 is [off-chain deterministic](https://web.archive.org/web/20210125144747/https://justjjy.com/Offchain-determinism), so [the current block header cannot be accessed while validating a transaction](https://github.com/nervosnetwork/ckb/blob/f93b498379173353b5804818b33227cc302ffd6a/script/src/syscalls/load_header.rs#L72).
 
 Thus the protocol is forced to split a deposit into two phases:
 
@@ -949,7 +930,7 @@ A few things have changed since inception. These are the updated use cases:
 - iCKB can remain useful in Nervos L2 and bridge contexts because it keeps its value and continues accruing Nervos DAO interest while staying liquid.
 - In the short term the most impactful iCKB result will be that more users will feel comfortable staking into Nervos DAO by using iCKB. More CKB will be locked into Nervos DAO, which is an achievement in itself.
 - In the medium term more decentralized finance protocols will integrate iCKB. So users will be able to receive the interest paid out by both these protocols and Nervos DAO.
-- In the long term, more UTXO chains will be integrated with Nervos thanks to [RGB++, and iCKB is ideally positioned to take advantage of this](https://github.com/ckb-cell/RGBPlusPlus-design/blob/main/docs/light-paper-en.md#coins). Users from other chains will be able to receive the interest paid out by Nervos DAO while remaining liquid. Protocols from other chains will also be able to build on top of iCKB, so users will be able to receive the interest paid out by both those protocols and Nervos DAO.
+- In the long term, more UTXO chains will be integrated with Nervos thanks to [RGB++, and iCKB is ideally positioned to take advantage of this](https://github.com/utxostack/RGBPlusPlus-design/blob/main/docs/light-paper-en.md#coins). Users from other chains will be able to receive the interest paid out by Nervos DAO while remaining liquid. Protocols from other chains will also be able to build on top of iCKB, so users will be able to receive the interest paid out by both those protocols and Nervos DAO.
 
 ## Useful Resources
 
@@ -963,7 +944,6 @@ A few things have changed since inception. These are the updated use cases:
 - [iCKB Scripts code](https://github.com/ickb/contracts/tree/master/scripts)
 - [Scalebit Audit](https://scalebit.xyz/reports/20240911-ICKB-Final-Audit-Report.pdf)
 - [Initial proposal on Nervos Talk](https://talk.nervos.org/t/looking-for-feedback-ickb-a-tokenization-of-nervosdao-deposits/6772)
-- [Is wstCKB just another iCKB?](https://github.com/stablepp/media-kit/issues/1)
 - [Reference whitepaper](https://github.com/ickb/whitepaper)
 
 ## License
