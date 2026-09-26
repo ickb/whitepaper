@@ -54,7 +54,7 @@ As with dCKB, iCKB's approach is to tokenize Nervos DAO receipts, but with a twi
 This protocol aims to solve two problems with Nervos DAO:
 
 - CKB locked in the Nervos DAO remains liquid as iCKB can truly be used as a normal currency.
-- iCKB can be converted back to CKB quickly at any time without having to wait for maturity.
+- iCKB can be converted back to CKB at any time, using the pool's soonest-maturing deposits instead of waiting for the user's own deposit to mature.
 
 ### Water Mill Analogy
 
