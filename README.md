@@ -451,7 +451,7 @@ struct OwnedOwnerData {
 
 In the Mint transaction, the output contains:
 
-1. The owned cell with this script as lock.
+1. The owned cell, a DAO withdrawal request with this script as lock.
 2. The owner cell with this script as type and a lock that identifies the user. This cell stores in its data the signed relative index distance between the owned cell and itself as a signed 32-bit integer encoded in little-endian.
 
 Validation rule: `owned_index == owner_index + owned_distance`
@@ -501,7 +501,7 @@ Outputs:
 
 #### Melt Owned Owner
 
-In the Melt transaction, the input contains both the owned cell and the owner cell. If one of the two is missing, the script fails validation.
+In the Melt transaction, the input contains both the owned cell and the owner cell, paired by the same distance rule. If one of the two is missing, the script fails validation.
 
 **Example of withdrawal phase 2 using Owned Owner:**
 
@@ -511,6 +511,7 @@ CellDeps:
     - ...
 HeaderDeps: 
     - Deposit Block Header Hash
+    - Withdrawal Request Block Header Hash
     - ...
 Inputs:
     - Nervos DAO phase 1 withdrawal cell:
