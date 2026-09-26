@@ -194,12 +194,12 @@ Taking these incentives into consideration, at least 90% of the deposit amount i
 
 Since having a separate receipt per deposit cell would be capital inefficient, the protocol allows multiple deposits to be accounted for with a single receipt. An iCKB receipt accounts for a group of deposits with the same size, it just contains the single deposit unoccupied CKB capacity and the quantity of the accounted deposits. In a transaction output there can be many receipt cells and possibly more than one receipt for the same deposit size.
 
-For simplicity [a transaction containing Nervos DAO script is currently limited to `64` output cells](https://github.com/nervosnetwork/ckb-system-scripts/blob/814eb82c44f560dbdad2be97eb85464062920237/c/dao.c#L38-L41) so that processing is simplified. This limitation may be relaxed later on in a future Nervos DAO script update.
+For simplicity [a transaction containing Nervos DAO script is currently limited to `64` output cells](https://github.com/nervosnetwork/ckb-system-scripts/blob/814eb82c44f560dbdad2be97eb85464062920237/c/dao.c#L38-L41) so that processing is simplified.
 
 In a receipt cell data:
 
-- The second `8 bytes` store the deposit unoccupied capacity, which is the single deposit capacity minus its occupied capacity, the actual `deposit_amount`. A single receipt tracks a group of deposits with the same unoccupied capacity in the current tx output. Multiple receipts for a specific unoccupied capacity may be created where each one keeps track of a different group of deposits.
 - The first `4 bytes` store the quantity of deposits with the same unoccupied capacity being tracked in the tx output. A tx may create many deposits with the same unoccupied capacity. This counter keeps track of how many deposits with the same unoccupied capacity are being tracked in the current tx by this specific receipt.
+- The next `8 bytes` store the deposit unoccupied capacity, which is the single deposit capacity minus its occupied capacity, the actual `deposit_amount`. A single receipt tracks a group of deposits with the same unoccupied capacity in the current tx output. Multiple receipts for a specific unoccupied capacity may be created where each one keeps track of a different group of deposits.
 
 Summing up, in the first deposit phase, these rules must be followed:
 
@@ -210,7 +210,9 @@ Summing up, in the first deposit phase, these rules must be followed:
   - `deposit_quantity` keeps track of the quantity of deposits (4 bytes)
   - `deposit_amount` keeps track of the single deposit unoccupied capacity (8 bytes)
 - No more than 64 output cells are allowed under the [currently deployed Nervos DAO script](https://github.com/nervosnetwork/ckb-system-scripts/blob/814eb82c44f560dbdad2be97eb85464062920237/c/dao.c#L565-L591).
-- CellDeps must contain iCKB Dep Group comprising: iCKB Logic Script and Nervos DAO Script.
+- CellDeps must contain the [iCKB Dep Group](#non-upgradable-deployment), which includes: iCKB Logic Script and Nervos DAO Script.
+
+Since output locks are not executed, these rules apply only when iCKB Logic runs in the transaction, for example as the type of a receipt. A deposit created without it gets no receipt and so no iCKB: it is effectively a donation to the pool.
 
 **Receipt data molecule encoding:**
 
@@ -281,7 +283,7 @@ receipt_iCKB_value(deposit_quantity, deposit_amount, AR_m) {
 - The total iCKB value of input tokens and input receipts must be equal to the total iCKB value of output tokens.
 - iCKB xUDT flags are set to `0x80000000` to enable [xUDT owner mode by input type](https://github.com/nervosnetwork/rfcs/blob/master/rfcs/0052-extensible-udt/0052-extensible-udt.md#owner-mode-update). This flag must later on be encoded as a `Uint32` Little Endian, so its final encoding is `0x00000080`.
 - HeaderDeps must include the hash of the header of the on-chain block containing the receipt tx for each receipt being converted into iCKB xUDT.
-- CellDeps must contain iCKB Dep Group comprising: iCKB Logic Script, Standard xUDT Script and Nervos DAO Script.
+- CellDeps must contain the [iCKB Dep Group](#non-upgradable-deployment), which includes: iCKB Logic Script, Standard xUDT Script and Nervos DAO Script.
 
 **Example of deposit phase 2:**
 
@@ -357,7 +359,7 @@ deposit_iCKB_value(capacity, occupied_capacity, AR_m) {
 - The Withdrawal Request lock must have the same serialized size as the consumed deposit lock under the current CKB node-level DAO rule.
 - No more than 64 output cells are allowed under the [currently deployed Nervos DAO script](https://github.com/nervosnetwork/ckb-system-scripts/blob/814eb82c44f560dbdad2be97eb85464062920237/c/dao.c#L565-L591).
 - HeaderDeps must include the hash of the header of the on-chain block containing the deposits for each deposit being used to withdraw and each receipt being directly cashed out.
-- CellDeps must contain iCKB Dep Group comprising: iCKB Logic Script, Standard xUDT Script and Nervos DAO Script.
+- CellDeps must contain the [iCKB Dep Group](#non-upgradable-deployment), which includes: iCKB Logic Script, Standard xUDT Script and Nervos DAO Script.
 
 **Example of withdrawal phase 1:**
 
