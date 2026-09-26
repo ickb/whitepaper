@@ -408,7 +408,7 @@ One transaction can include many actions from different iCKB phases. For example
 
 The iCKB protocol would be difficult to use without additional scripts. This section describes the L1 scripts that have been developed to address iCKB user needs.
 
-These scripts offer solutions to specific lock needs, while supporting all user locks. The current iCKB deployment assumes whole-transaction-binding user locks, but delegated-signature and `OTX`-style integrations need extra care. For example, let's assume that:
+These scripts assume user locks that sign the whole transaction. Delegated-signature and `OTX`-style locks, which exist today only as specs and demo code, would need extra care. For example, let's assume that:
 
 - The user lock is OTX-signature-based.
 - The user unlocks some cells with a signature in the first OTX transaction.
