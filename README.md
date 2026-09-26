@@ -802,7 +802,7 @@ Additionally, the protocol uses the following dependency group:
 
 - iCKB Logic
 - Limit Order
-- Owned-Owner
+- Owned Owner
 - xUDT
 - Secp256k1 Blake160
 - Nervos DAO
@@ -831,7 +831,7 @@ Additionally, the protocol uses the following dependency group:
 | index | 0x0 |
 | dep_type | depGroup |
 
-#### [Owned-Owner Mainnet Deployment](https://explorer.nervos.org/script/0xacc79e07d107831feef4c70c9e683dac5644d5993b9cb106dca6e74baa381bd0/data1)
+#### [Owned Owner Mainnet Deployment](https://explorer.nervos.org/script/0xacc79e07d107831feef4c70c9e683dac5644d5993b9cb106dca6e74baa381bd0/data1)
 
 | parameter | value |
 | --- | --- |
@@ -879,7 +879,7 @@ Additionally, the protocol uses the following dependency group:
 | index | 0x0 |
 | dep_type | depGroup |
 
-#### [Owned-Owner Testnet Deployment](https://pudge.explorer.nervos.org/script/0xacc79e07d107831feef4c70c9e683dac5644d5993b9cb106dca6e74baa381bd0/data1)
+#### [Owned Owner Testnet Deployment](https://pudge.explorer.nervos.org/script/0xacc79e07d107831feef4c70c9e683dac5644d5993b9cb106dca6e74baa381bd0/data1)
 
 | parameter | value |
 | --- | --- |
