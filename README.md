@@ -329,7 +329,7 @@ The proposed protocol instead proceeds by unwrapping iCKB tokens into Nervos DAO
 
 As seen in [iCKB/CKB Exchange Rate Calculation](#ickbckb-exchange-rate-calculation), for each deposit and receipt the equivalent amount of iCKB is well defined. The only difference is the incentive mechanism: requesting the withdrawal from an oversized deposit is incentivized by a 10% discount on the amount exceeding a standard deposit.
 
-An additional current CKB constraint is that Nervos DAO deposit cells and phase 1 withdrawal cells must use lock scripts of the same serialized size. This is enforced at the node level by the [`DaoScriptSizeVerifier`](https://github.com/nervosnetwork/ckb/blob/6730f8023810d0888aa80c6a0d54cc2af918097d/verification/src/transaction_verifier.rs#L811-L885), which was added as a temporary mitigation for the Nervos DAO occupied-capacity vulnerability. The public [Meepo hardfork note](https://blog.cryptape.com/ckb-vm-changes-under-the-meepo-hardfork#heading-fix-nervos-dao-occupied-capacity-vulnerability) describes the same fix and credits [phroi](https://github.com/phroi) with identifying and reporting the issue. Since iCKB deposits use the empty-args `iCKB Logic` lock, this leaves little room to encode user-specific ownership directly in the withdrawal request lock. For this reason, when a dedicated owner/owned pairing is useful, [Owned Owner Script](#owned-owner-script) can wrap a DAO withdrawal request together with a user-owned controller cell.
+An additional current CKB constraint is that Nervos DAO deposit cells and phase 1 withdrawal cells must use lock scripts of the same serialized size. This is enforced at the node level by the [`DaoScriptSizeVerifier`](https://github.com/nervosnetwork/ckb/blob/2592ddf0502cd4adfe886db893cccc866db3c60f/verification/src/transaction_verifier.rs#L865-L982), which was added as a temporary mitigation for the Nervos DAO occupied-capacity vulnerability. The public [Meepo hardfork note](https://blog.cryptape.com/ckb-vm-changes-under-the-meepo-hardfork#heading-fix-nervos-dao-occupied-capacity-vulnerability) describes the same fix and credits [phroi](https://github.com/phroi) with identifying and reporting the issue. Since iCKB deposits use the empty-args `iCKB Logic` lock, the withdrawal request lock must also have empty args, so ordinary user locks cannot hold it. For this reason, [Owned Owner Script](#owned-owner-script) wraps a DAO withdrawal request together with a user-owned controller cell.
 
 Summing up, when withdrawing, these rules must be followed:
 
@@ -388,7 +388,7 @@ Outputs:
     - Nervos DAO phase 1 withdrawal cell:
         Data: Deposit cell's inclusion block number
         Type: Nervos DAO
-        Lock: A user lock with the same serialized size as the deposit lock
+        Lock: An empty-args lock, such as Owned Owner
     - ...
 ```
 
@@ -433,7 +433,7 @@ This is the reason why these scripts are instead designed around a similar but s
 
 ### Owned Owner Script
 
-While the iCKB Logic Script is independent of the withdrawal request lock choice, a dedicated owner/owned pairing can still be useful. For this reason, the Owned Owner Script was developed. This script pairs DAO withdrawal requests, including but not limited to iCKB-origin withdrawals, with owner cells. In a transaction there may be multiple owned cells and owner cells. This script's lifecycle consists of two transactions: Mint and Melt.
+Since ordinary user locks cannot hold an iCKB withdrawal request, the Owned Owner Script was developed. This script pairs DAO withdrawal requests, including but not limited to iCKB-origin withdrawals, with owner cells. In a transaction there may be multiple owned cells and owner cells. This script's lifecycle consists of two transactions: Mint and Melt.
 
 **Owner data molecule encoding:**
 
