@@ -56,16 +56,6 @@ In the same way, the protocol can have many distinct deposits, each of them cons
 Jordan Mack's comments on Nervos L1 & iCKB:
 > In a more abstract sense, this doesn't violate any of intentions of the platform. The CKB that is staked is still out of circulation. iCKB does not grant the holder the ability to store data on the blockchain. In the most pure sense, iCKB is enabling the functionality that dCKB was trying to achieve. It better solves the problem because anyone can unlock the original CKB from the Nervos DAO using iCKB instead of requiring the original owner to unlock it as with dCKB.
 
-## Team
-
-### Phroi
-
-I'm a developer, going by the pseudonym Phroi. I'd like to spend my time working on projects that give meaning to my life and improve users' lives. Win-win situations. The best way to interact with me is in writing, since English is not my native language. A bit on the over-thinker side, so much that I unwillingly find vulnerabilities in other people's work.
-
-### Discovering iCKB
-
-During February 2022, while [testing the ground for a Nervos DAO based ISPO](https://discord.com/channels/657799690070523914/657799690552606745/943306112889933864), I discovered the untapped need for a token that liquefies and bridges interest from L1 to L2, so with Jordan Mack's help I started researching its feasibility. It's since then that I'm working on iCKB.
-
 ## Diving Into The Protocol
 
 ### On-Chain, Trust-Less and Decentralized
