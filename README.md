@@ -598,7 +598,8 @@ In Mint transactions, the output contains:
     - `padding` is used to achieve the same `OrderData` length for both variants.
     - `master_distance` expresses the signed relative index distance between this cell and the master cell.
     - `ckb_to_udt` expresses the order exchange ratio from CKB to UDT.
-    - `udt_to_ckb` expresses the order exchange ratio from UDT to CKB
+    - `udt_to_ckb` expresses the order exchange ratio from UDT to CKB.
+    - A ratio with both multipliers at zero disables that direction. At least one ratio must be enabled, and when both are, converting back and forth must not lose value.
     - `ckb_min_match_log` expresses the logarithm in base 2 of the minimum partial match of the exchanged asset. The UDT minimum match is calculated using the `udt_to_ckb` ratio.
 
 2. The master cell with this script as type and a lock that identifies the user. This cell controls the limit order cell.
@@ -645,14 +646,18 @@ The only difference between `MintOrderData` and `MatchOrderData` is that `paddin
 
 Validation rules:
 
-- `in_ckb * ckb_multiplier + in_udt * udt_multiplier <= out_ckb * ckb_multiplier + out_udt * udt_multiplier`
-- `in_wanted_asset + 2^log_min_match <= out_wanted_asset`
+- The order must give away exactly one asset, in a direction one of its enabled ratios allows, using that ratio's multipliers:
+    - `in_ckb * ckb_multiplier + in_udt * udt_multiplier <= out_ckb * ckb_multiplier + out_udt * udt_multiplier`
+- A match must be at least the minimum match, measured on the asset the order gives away:
+    - CKB to UDT: `in_ckb >= out_ckb + 2^ckb_min_match_log`
+    - UDT to CKB, using the `udt_to_ckb` ratio: `in_udt * udt_multiplier >= out_udt * udt_multiplier + 2^ckb_min_match_log * ckb_multiplier`
+    - A match that completely fulfills the order is exempt.
 - An order already completely fulfilled cannot be matched.
 - Only the `MatchOrderData` variant of `OrderData` is allowed as the matched order output.
 - The implicit Master outpoint must be equal between the input and its matched output order:
     1. If input `OrderData` is the variant `MintOrderData`, then input order `outpoint.tx_hash` must be equal to its matched output order `master_outpoint.tx_hash`. Additionally, input order `outpoint.index + master_distance` must be equal to its matched output order `master_outpoint.index`.
     2. If input `OrderData` is the variant `MatchOrderData`, then `master_outpoint` must be equal between input and its matched output order.
-- `ckb_to_udt`, `udt_to_ckb` and `ckb_min_match_log` must be equal between input and its matched output order.
+- The UDT type, `ckb_to_udt`, `udt_to_ckb` and `ckb_min_match_log` must be equal between input and its matched output order.
 - Additional cell data is not allowed in order cells.
 
 **Example of Limit Order Match:**
