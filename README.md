@@ -784,6 +784,7 @@ Directional LOs do not increase in value; usually, they remain constant througho
 
 - LO has the same parameters as Mint LO
 - LO has at least the same value as Mint LO
+- LO has at least the same progress as Mint LO
 
 **Heuristic**: if there are multiple LOs with the same Master cell, choose the LO with the **best progress**.
 
@@ -802,33 +803,20 @@ Dual-Sided LOs (those with two ratios) can increase in value. They increase in v
 
 ### Implementation
 
-The current stack-side mitigation lives in pinned `@ickb/order` code:
-
-- [`OrderManager.findOrders(...)`](https://github.com/ickb/stack/blob/43ee8d8a57009f3dd731eb1045d29688de2a84f8/packages/order/src/order.ts#L574-L630) groups live orders with masters.
-- [`resolveOrderGroup(...)`](https://github.com/ickb/stack/blob/43ee8d8a57009f3dd731eb1045d29688de2a84f8/packages/order/src/order.ts#L735-L760) loads the origin and builds the final `OrderGroup`.
-- [`findOrigin(...)`](https://github.com/ickb/stack/blob/43ee8d8a57009f3dd731eb1045d29688de2a84f8/packages/order/src/order.ts#L763-L809) recovers the mint-origin order from the master cell's transaction.
-- [`OrderCell.resolve(...)`](https://github.com/ickb/stack/blob/43ee8d8a57009f3dd731eb1045d29688de2a84f8/packages/order/src/cells.ts#L235-L279) validates and ranks descendant orders.
-
-The current stack keeps the same front-end strategy in `@ickb/order`, but makes the selection rule explicit in one resolver.
+The iCKB stack's SDK (`@ickb/sdk`) applies the Directional LO Heuristic when it reads orders, grouping live orders by their Master cell:
 
 1. Fetch the original Mint LO for a given Master cell and treat it as the origin.
 2. Reject any candidate LO whose lock script, UDT type, resolved Master outpoint, or order parameters differ from the origin, or whose normalized value is lower than the origin. Here `normalized value` means the order value computed from unoccupied CKB and UDT with the order multipliers:
    - CKB -> UDT: `ckb_unoccupied * ckb_to_udt.ckb_multiplier + udt_value * ckb_to_udt.udt_multiplier`
    - UDT -> CKB: `ckb_unoccupied * udt_to_ckb.ckb_multiplier + udt_value * udt_to_ckb.udt_multiplier`
-   - Dual-Sided LO: the stack compares the common-scale average of those two values as implemented by `@ickb/order`.
-3. For Directional LO, also reject any candidate whose progress is lower than the origin. Here `progress` means the amount already converted into the target asset, so it is monotonic and favors the real matched lineage over a larger but still unprogressed forgery.
-4. For Dual-Sided LO, there is no irreversible notion of progress, so the stack sets `progress := normalized value`. This reduces the same resolver to the Dual-Sided heuristic above: the LO with the best normalized value is chosen.
+3. Also reject any candidate whose progress is lower than the origin. Here `progress` means the amount already converted into the target asset, so it is monotonic and favors the real matched lineage over a larger but still unprogressed forgery:
+   - CKB -> UDT: `progress = udt_value * ckb_to_udt.udt_multiplier`
+   - UDT -> CKB: `progress = ckb_unoccupied * udt_to_ckb.ckb_multiplier`
+4. Choose the candidate with the best progress. Among equals, prefer the greater normalized value, then a newly minted LO over a non-mint LO. If candidates still tie, skip the group rather than choose by indexer order.
 
-In the current stack, the directional `progress` scalar is computed from the asset that has already moved to the other side of the order:
+The stack currently neither places nor handles Dual-Sided LOs: it does not match, estimate, display or melt them.
 
-- CKB -> UDT: `progress = udt_value * ckb_to_udt.udt_multiplier`
-- UDT -> CKB: `progress = ckb_unoccupied * udt_to_ckb.ckb_multiplier`
-
-This is why the same resolver can implement both heuristics without branching on a second selection algorithm: Directional LO rank by irreversible progress, while Dual-Sided LO rank by normalized value because for that shape `progress == normalized value`.
-
-If multiple qualified candidates still tie on that primary score, the current stack applies one last tie-break: prefer a newly minted LO over a non-mint LO. In practice this means preferring a candidate that still carries the mint-relative Master reference over one that already points to an absolute Master outpoint. This tie-break is secondary only: it is consulted after the directional-progress or dual-sided-value comparison has already produced a tie. If distinct mint-origin outputs or distinct candidate LOs remain tied after that, the stack skips the group instead of selecting by indexer order.
-
-This remains a best-effort client-side heuristic for immutable deployed behavior, not an on-chain proof that forged higher-progress descendants cannot exist. Consumers should use resolved `OrderGroup`s from `@ickb/order` rather than hand-pairing order and master cells.
+This remains a best-effort client-side heuristic for immutable deployed behavior, not an on-chain proof that forged higher-progress descendants cannot exist. Consumers should use the resolved order groups from `@ickb/sdk` rather than hand-pairing order and master cells.
 
 ## Non-Upgradable Deployment
 
